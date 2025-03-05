@@ -9,10 +9,10 @@ const app = express();
 
 app.use(cors());
 
-app.use('/customers', customerRouter)
-
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+app.use('/customers', customerRouter)
 
 app.listen(5000, function () {
     console.log("Server listening on port 5000");

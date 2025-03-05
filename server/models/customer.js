@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     profile_picture: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     country: {
       type: DataTypes.STRING,

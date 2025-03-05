@@ -22,7 +22,7 @@ module.exports = {
             },
             profile_picture: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             country: {
                 type: Sequelize.STRING,
@@ -31,6 +31,14 @@ module.exports = {
             state: {
                 type: Sequelize.STRING,
                 allowNull: false,
+            },
+            createdAt: {
+                allowNull: false,
+                type: Sequelize.DATE
+            },
+            updatedAt: {
+                allowNull: false,
+                type: Sequelize.DATE
             }
         });
     },

@@ -7,35 +7,43 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
-              },
-              restaurant_id: {
+            },
+            restaurant_id: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
-              },
-              name: {
+            },
+            name: {
                 type: Sequelize.STRING,
                 allowNull: false,
-              },
-              ingredients: {
+            },
+            ingredients: {
                 type: Sequelize.TEXT,
                 allowNull: false,
-              },
-              image: {
+            },
+            image: {
                 type: Sequelize.STRING,
                 allowNull: true,
-              },
-              price: {
+            },
+            price: {
                 type: Sequelize.DECIMAL(10, 2),
                 allowNull: false,
-              },
-              description: {
+            },
+            description: {
                 type: Sequelize.TEXT,
                 allowNull: true,
-              },
-              category: {
+            },
+            category: {
                 type: Sequelize.STRING,
                 allowNull: false,
-              }
+            },
+            createdAt: {
+                allowNull: false,
+                type: Sequelize.DATE
+            },
+            updatedAt: {
+                allowNull: false,
+                type: Sequelize.DATE
+            }
         });
     },
     async down(queryInterface, Sequelize) {
