@@ -2,37 +2,42 @@
 const {
   Model
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  const Restaurant = sequelize.define('Restaurant', {
+  const Dish = sequelize.define('Dish', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
+    restaurant_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING,
+    ingredients: {
+      type: DataTypes.TEXT,
       allowNull: false,
     },
-    password: {
+    image: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
-    location: {
-      type: DataTypes.STRING,
+    price: {
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     description: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
-    cantact_info: {
+    category: {
       type: DataTypes.STRING,
       allowNull: false,
     }
   }, {});
-  return Restaurant;
+  return Dish;
 };
