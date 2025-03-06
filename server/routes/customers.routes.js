@@ -6,6 +6,7 @@ const { customerController } = require('../controllers');
 customerRouter.post('/signup', customerController.createCustomer);
 customerRouter.post('/login', customerController.loginCustomer);
 customerRouter.post('/logout', customerController.logoutCustomer);
+customerRouter.get('/session', customerController.getSession);
 
 // Customer-specific endpoints (require the customer to be logged in)
 customerRouter.get('/:id', customerController.getCustomerById);

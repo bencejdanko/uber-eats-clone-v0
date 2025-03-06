@@ -7,6 +7,7 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
+                allowNull: false,
             },
             name: {
                 type: Sequelize.STRING,
@@ -27,11 +28,11 @@ module.exports = {
             },
             country: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             state: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             createdAt: {
                 allowNull: false,

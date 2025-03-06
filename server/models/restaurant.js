@@ -27,11 +27,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
-    cantact_info: {
+    contact_info: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     }
   }, {});
   return Restaurant;

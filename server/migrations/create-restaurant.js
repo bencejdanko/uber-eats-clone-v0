@@ -27,11 +27,11 @@ module.exports = {
             },
             description: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: true,
             },
-            cantact_info: {
+            contact_info: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             createdAt: {
                 allowNull: false,
