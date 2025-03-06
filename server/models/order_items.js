@@ -2,7 +2,7 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const OrderItems = sequelize.define('OrderItems', {
+  const OrderItem = sequelize.define('OrderItem', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -26,5 +26,5 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     }
   }, {});
-  return OrderItems;
+  return OrderItem;
 };

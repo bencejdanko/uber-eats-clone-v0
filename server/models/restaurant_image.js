@@ -2,7 +2,7 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const RestaurantImages = sequelize.define('RestaurantImages', {
+  const RestaurantImage = sequelize.define('RestaurantImage', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -17,5 +17,5 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     }
   }, {});
-  return RestaurantImages;
+  return RestaurantImage;
 };

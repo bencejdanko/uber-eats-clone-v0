@@ -2,7 +2,7 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const Carts = sequelize.define('Carts', {
+  const Cart = sequelize.define('Cart', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -13,5 +13,5 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   });
-  return Carts;
+  return Cart;
 };

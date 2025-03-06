@@ -1,3 +1,5 @@
-const { createCustomer } = require('./customers.controller');
+const customerController = require('./customers.controller');
+const restaurantController = require('./restaurants.controller');
 
-exports.createCustomer = createCustomer;
+exports.customerController = customerController;
+exports.restaurantController = restaurantController;

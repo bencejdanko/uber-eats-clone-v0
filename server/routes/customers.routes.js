@@ -1,23 +1,24 @@
 const express = require('express');
 const customerRouter = express.Router();
+const { customerController } = require('../controllers');
 
-const { createCustomer } = require('../controllers');
+// Signup and login routes (no session auth required)
+customerRouter.post('/signup', customerController.createCustomer);
+customerRouter.post('/login', customerController.loginCustomer);
+customerRouter.post('/logout', customerController.logoutCustomer);
 
-// Customer Routes
-customerRouter.post('/signup', createCustomer);
-// customerRouter.post('/login', null);
-// customerRouter.post('/logout', null);
-// customerRouter.get('/:id', null);
-// customerRouter.patch('/:id', null);
-// customerRouter.put('/:id/profile_picture', null);
-// customerRouter.get('/:id/orders', null);
-// customerRouter.get('/:id/cart', null);
-// customerRouter.delete('/:id/cart', null)
-// customerRouter.post('/:id/cart/items', null);
-// customerRouter.patch('/:id/cart/items/:itemId', null);
-// customerRouter.delete('/:id/cart/items/:itemId', null);
-// customerRouter.post('/:id/favorites', null);
-// customerRouter.get('/:id/favorites', null);
-// customerRouter.delete('/:id/favorites/:favoriteId', null);
+// Customer-specific endpoints (require the customer to be logged in)
+customerRouter.get('/:id', customerController.getCustomerById);
+customerRouter.patch('/:id', customerController.updateCustomer);
+customerRouter.put('/:id/profile_picture', customerController.updateProfilePicture);
+customerRouter.get('/:id/orders', customerController.getCustomerOrders);
+customerRouter.get('/:id/cart', customerController.getCustomerCart);
+customerRouter.delete('/:id/cart', customerController.clearCustomerCart);
+customerRouter.post('/:id/cart/items', customerController.addItemToCart);
+customerRouter.patch('/:id/cart/items/:itemId', customerController.updateCartItem);
+customerRouter.delete('/:id/cart/items/:itemId', customerController.deleteCartItem);
+customerRouter.post('/:id/favorites', customerController.addFavorite);
+customerRouter.get('/:id/favorites', customerController.getFavorites);
+customerRouter.delete('/:id/favorites/:favoriteId', customerController.deleteFavorite);
 
-exports.customerRouter = customerRouter;
+module.exports = customerRouter;

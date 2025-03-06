@@ -2,7 +2,7 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const RestaurantTimings = sequelize.define('RestaurantTimings', {
+  const RestaurantTiming = sequelize.define('RestaurantTiming', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -25,5 +25,5 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     }
   }, {});
-  return RestaurantTimings;
+  return RestaurantTiming;
 };

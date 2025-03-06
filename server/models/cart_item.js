@@ -2,7 +2,7 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const CartItems = sequelize.define('CartItems', {
+  const CartItem = sequelize.define('CartItem', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -22,5 +22,5 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 1,
     }
   }, {});
-  return CartItems;
+  return CartItem;
 };
