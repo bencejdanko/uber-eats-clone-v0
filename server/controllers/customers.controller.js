@@ -24,11 +24,9 @@ exports.createCustomer = async (req, res) => {
 
 exports.getSession = async (req, res) => {
 
-  console.log("Requesting session..." + req.session.customerId);
-  console.log(JSON.stringify(req.session));
-
   if (req.session.customerId) {
     const customer = await Customer.findByPk(req.session.customerId);
+    customer.password = undefined;
     res.json(customer);
   }
   else {
@@ -53,8 +51,6 @@ exports.loginCustomer = async (req, res) => {
 
     // Save customer id in session
     req.session.customerId = customer.id;
-    console.log("Logged in as " + req.session.customerId);
-    console.log(JSON.stringify(req.session));
 
     res.json({ message: 'Logged in successfully', customer });
   } catch (error) {

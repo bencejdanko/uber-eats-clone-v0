@@ -41,9 +41,21 @@ export const deliveryEatsApi = createApi({
             }),
             invalidatesTags: ["User"],
         }),
+        logoutCustomer: builder.mutation<void, void>({
+            query: () => "customers/logout",
+            invalidatesTags: ["User"],
+        }),
         checkSession: builder.query<User, void>({
             query: () => "customers/session",
             providesTags: ["User"],
+        }),
+        updateCustomer: builder.mutation<User, Partial<User>>({
+            query: (body) => ({
+                url: "customers",
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["User"],
         }),
     }),
 });
@@ -53,5 +65,6 @@ export const {
     useUpdateUserMutation,
     useSignupCustomerMutation,
     useLoginCustomerMutation,
+    useLogoutCustomerMutation,
     useCheckSessionQuery,
 } = deliveryEatsApi;

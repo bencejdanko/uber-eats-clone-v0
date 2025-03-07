@@ -17,7 +17,6 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      console.log("A user session is active. User: ", user);
       dispatch(setUser(user))
     } else if (error) {
       console.error("No session active:", error);

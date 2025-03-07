@@ -9,7 +9,15 @@ function Home() {
     return (
         <div className='flex flex-col'>
             <h1>Welcome to Delivery Eats</h1>
-            <p>{user ? `Welcome, ${user.name}` : 'Please sign up or login'}</p>
+            <p>
+                {user.name ? (
+                    <>
+                        Welcome, {user.name}. <Link to='/customers'>Go to Dashboard</Link>
+                    </>
+                ) : (
+                    'Please sign up or login'
+                )}
+            </p>
             <p className='font-bold'>Customers</p>
             <Link to='/customers/signup'>Sign up</Link>
             <Link to='/customers/login'>Login</Link>
