@@ -4,7 +4,7 @@ import type { User } from "@/types";
 export const deliveryEatsApi = createApi({
     reducerPath: "deliveryEatsApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:5000/api/",
+        baseUrl: "/api",
         prepareHeaders: (headers) => {
             headers.set("Content-Type", "application/json");
             return headers;
