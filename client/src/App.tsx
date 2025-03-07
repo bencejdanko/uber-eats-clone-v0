@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, data } from "react-router-dom";
 
-import { useAppDispatch } from "./app/hooks";
-import { useCheckSessionQuery } from "./services/deliveryEats";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { useCheckSessionQuery } from "./services/api";
 
 import { Home } from "./screens";
 import * as customer from "./screens/Customer";
@@ -17,6 +17,7 @@ function App() {
 
   useEffect(() => {
     if (user) {
+      console.log("User session active:", user);
       dispatch(setUser(user))
     } else if (error) {
       console.error("No session active:", error);

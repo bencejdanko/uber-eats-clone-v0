@@ -4,6 +4,7 @@ import type { User } from '@/types';
 import { clear } from 'console';
 
 const initialState: User = {
+    id: '',
     name: '',
     email: '',
 }
@@ -15,6 +16,7 @@ export const userSlice = createSlice({
         setUser: (state, action: PayloadAction<User>) => {
             state.name = action.payload.name;
             state.email = action.payload.email;
+            state.id = action.payload.id;
 
             if (action.payload.profilePicture) {
                 state.profilePicture = action.payload.profilePicture;
@@ -24,16 +26,17 @@ export const userSlice = createSlice({
                 state.country = action.payload.country;
             }
 
-            if (action.payload.city) {
-                state.city = action.payload.city;
+            if (action.payload.state) {
+                state.state = action.payload.state;
             }
         },
         clearUser: (state) => {
+            state.id = '';
             state.name = '';
             state.email = '';
             state.profilePicture = '';
             state.country = '';
-            state.city = '';
+            state.state = '';
         }
     }
 })

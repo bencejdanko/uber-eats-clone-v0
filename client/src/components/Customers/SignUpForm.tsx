@@ -2,7 +2,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { useSignupCustomerMutation } from "@/services/deliveryEats";
+import { useSignupCustomerMutation } from "@/services/api";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -36,7 +36,7 @@ function SignUpForm() {
     });
 
     const [signupCustomer] = useSignupCustomerMutation();
-
+    const navigate = useNavigate();
     async function onSubmit(data: z.infer<typeof formSchema>) {
         const { error } = await signupCustomer(data);
 
@@ -45,7 +45,6 @@ function SignUpForm() {
             return;
         }
 
-        const navigate = useNavigate();
         navigate("customers/login");
     }
 

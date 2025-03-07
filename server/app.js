@@ -17,6 +17,7 @@ app.use(express.json());
 
 app.use('/api/customers', routers.customerRouter)
 app.use('/api/restaurants', routers.restaurantRouter)
+app.use('/api/cdn', routers.cdnRouter)
 
 app.listen(5000, function () {
     console.log("Server listening on port 5000");

@@ -2,7 +2,8 @@ import { useAppDispatch } from "@/app/hooks";
 import { clearUser } from "@/features/auth";
 import { useNavigate } from "react-router-dom";
 
-import { useLogoutCustomerMutation } from "@/services/deliveryEats";
+import { useLogoutCustomerMutation } from "@/services/api";
+import { useEffect } from "react";
 
 interface LogoutWrapperProps {
     className: string;
@@ -12,7 +13,7 @@ interface LogoutWrapperProps {
 function LogoutWrapper({ className, children }: LogoutWrapperProps) {
 
     const dispatch = useAppDispatch();
-    const [logoutCustomer] = useLogoutCustomerMutation();
+    const [logoutCustomer, { isError, isLoading, isSuccess }] = useLogoutCustomerMutation();
 
     const navigate = useNavigate();
 
@@ -23,8 +24,13 @@ function LogoutWrapper({ className, children }: LogoutWrapperProps) {
         if (error) {
             console.error(error);
         }
-        navigate("/");
     }
+
+    useEffect(() => {
+        if (isSuccess) {
+            navigate("/customers/login");
+        }
+    }, [isSuccess, navigate]);
 
     return <button className={className} onClick={logout}>{children}</button>;
 }

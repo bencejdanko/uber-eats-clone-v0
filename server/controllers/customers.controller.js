@@ -52,7 +52,7 @@ exports.loginCustomer = async (req, res) => {
     // Save customer id in session
     req.session.customerId = customer.id;
 
-    res.json({ message: 'Logged in successfully', customer });
+    res.json(customer);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -90,15 +90,18 @@ exports.updateCustomer = async (req, res) => {
     if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
       return res.status(401).json({ message: 'Unauthorized. Please login.' });
     }
-    const { name, email, password, country, state } = req.body;
+
+    console.log("REQUEST BODY: ", req.body); // Debugging
+
+    const { name, country, state } = req.body;
     const customer = await Customer.findByPk(req.params.id);
     if (!customer) return res.status(404).json({ message: 'Customer not found' });
 
     if (name) customer.name = name;
-    if (email) customer.email = email;
-    if (password) customer.password = bcrypt.hashSync(password, 10);
     if (country) customer.country = country;
     if (state) customer.state = state;
+
+    console.log("Updating customer: ", customer); // Debugging
 
     await customer.save();
     res.json(customer);
