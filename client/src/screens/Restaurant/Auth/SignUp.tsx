@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { SignUpForm } from "@/components/Customers";
+import { SignUpForm } from "@/components/Restaurants";
 
 function SignUp() {
     return (
@@ -8,7 +8,7 @@ function SignUp() {
             <h1 className='text-2xl mb-5 font-bold'>Sign Up</h1>
             <SignUpForm />
             <div className='flex justify-end'>
-                <Link to='/customers/login'>Log in</Link>
+                <Link to='/restaurants/login'>Log in</Link>
             </div>
         </div>
     );

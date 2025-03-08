@@ -3,9 +3,8 @@ import { BrowserRouter as Router, Route, Routes, data } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { useCheckCustomerSessionQuery } from "./services/api";
 
-import { Home } from "./screens";
-import * as customerScreens from "./screens/Customer";
-import * as restaurantScreens from "./screens/Restaurant";
+import * as screens from "./screens";
+
 import { useEffect } from "react";
 import { setCustomer } from "./features/auth";
 
@@ -27,15 +26,16 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<screens.Home />} />
 
-        <Route path="customers" element={<customerScreens.Home />} />
-        <Route path="/customers/login" element={<customerScreens.Login />} />
-        <Route path="/customers/signup" element={<customerScreens.SignUp />} />
+        <Route path="customers" element={<screens.Customer.Home />} />
+        <Route path="/customers/login" element={<screens.Customer.Auth.Login />} />
+        <Route path="/customers/signup" element={<screens.Customer.Auth.SignUp />} />
 
-        <Route path="/restaurants" element={<restaurantScreens.Home />} />
-        <Route path="/restaurants/signup" element={<restaurantScreens.SignUp />} />
-        <Route path="/restaurants/login" element={<restaurantScreens.Login />} />
+        <Route path="/restaurants" element={<screens.Restaurant.Home />} />
+        <Route path="/restaurants/login" element={<screens.Restaurant.Auth.Login />} />
+        <Route path="/restaurants/signup" element={<screens.Restaurant.Auth.SignUp />} />
+
       </Routes>
     </Router>
   );

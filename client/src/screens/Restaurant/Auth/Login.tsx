@@ -1,4 +1,4 @@
-import { LoginForm } from "@/components/Customers";
+import { LoginForm } from "@/components/Restaurants";
 import { Link } from "react-router-dom";
 
 function Login() {
@@ -8,7 +8,7 @@ function Login() {
             <h1 className='text-2xl mb-5 font-bold'>Login</h1>
             <LoginForm />
             <div className='flex justify-end'>
-                <Link to='/customers/signup'>Sign up</Link>
+                <Link to='/restaurants/signup'>Sign up</Link>
             </div>
         </div>
     );

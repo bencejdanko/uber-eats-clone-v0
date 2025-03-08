@@ -47,7 +47,7 @@ function SignUpForm() {
             return;
         }
 
-        navigate("restaurants/login");
+        navigate("/restaurants/login");
     }
 
     return (
