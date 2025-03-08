@@ -1,56 +1,56 @@
 import { base } from "./base";
-import type { User } from "@/types";
+import type { Customer } from "@/types";
 
 const extendedApi = base.injectEndpoints({
     endpoints: (builder) => ({
-        getUser: builder.query<User, void>({
+        getUser: builder.query<Customer, void>({
             query: (id) => `customers/${id}`,
-            providesTags: ["User"],
+            providesTags: ["Customer"],
         }),
-        updateUser: builder.mutation<User, Partial<User>>(
+        updateUser: builder.mutation<Customer, Partial<Customer>>(
             {
                 query: (body) => ({
                     url: `/customers/${body.id}`,
                     method: "PATCH",
                     body,
                 }),
-                invalidatesTags: ["User"],
+                invalidatesTags: ["Customer"],
             },
         ),
-        signupCustomer: builder.mutation<User, Partial<User>>({
+        signupCustomer: builder.mutation<Customer, Partial<Customer>>({
             query: (body) => ({
                 url: "customers/signup",
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["User"],
+            invalidatesTags: ["Customer"],
         }),
-        loginCustomer: builder.mutation<User, Partial<User>>({
+        loginCustomer: builder.mutation<Customer, Partial<Customer>>({
             query: (body) => ({
                 url: "customers/login",
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["User"],
+            invalidatesTags: ["Customer"],
         }),
         logoutCustomer: builder.mutation<void, void>({
             query: () => ({
                 url: "customers/logout",
                 method: "POST",
             }),
-            invalidatesTags: ["User"],
+            invalidatesTags: ["Customer"],
         }),
-        checkSession: builder.query<User, void>({
+        checkCustomerSession: builder.query<Customer, void>({
             query: () => "customers/session",
-            providesTags: ["User"],
+            providesTags: ["Customer"],
         }),
-        updateCustomer: builder.mutation<User, Partial<User>>({
+        updateCustomer: builder.mutation<Customer, Partial<Customer>>({
             query: (body) => ({
                 url: "customers",
                 method: "PATCH",
                 body,
             }),
-            invalidatesTags: ["User"],
+            invalidatesTags: ["Customer"],
         }),
     }),
 });
@@ -61,5 +61,5 @@ export const {
     useSignupCustomerMutation,
     useLoginCustomerMutation,
     useLogoutCustomerMutation,
-    useCheckSessionQuery,
+    useCheckCustomerSessionQuery,
 } = extendedApi;

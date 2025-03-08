@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { setUser } from "@/features/auth";
+import { setCustomer } from "@/features/auth";
 
 import { useLoginCustomerMutation } from "@/services/api";
 import { useNavigate } from "react-router-dom";
@@ -38,20 +38,19 @@ function LoginForm() {
         },
     });
 
-    const user = useAppSelector((state) => state.user);
+    const user = useAppSelector((state) => state.customer);
     const [loginCustomer, { isError, isLoading, isSuccess}] = useLoginCustomerMutation();
 
     async function onSubmit(data: z.infer<typeof formSchema>) {
         
-        const { error, data: user } = await loginCustomer(data);
+        const { error, data: customer } = await loginCustomer(data);
 
         if (error) {
             console.error(error);
             return;
         }
 
-
-        dispatch(setUser(user));
+        dispatch(setCustomer(customer));
     }
 
     useEffect(() => {

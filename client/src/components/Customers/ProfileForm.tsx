@@ -26,10 +26,10 @@ import {
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useNavigate } from "react-router-dom";
-import { setUser } from "@/features/auth";
+import { setCustomer } from "@/features/auth";
 
 import { useUpdateUserMutation } from "@/services/api";
-import { User } from "@/types";
+import { Customer } from "@/types";
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
@@ -43,7 +43,7 @@ function ProfileForm() {
 
     const [updateUser, { isLoading, isError, isSuccess, error }] = useUpdateUserMutation();
 
-    const user = useAppSelector((state) => state.user);
+    const user = useAppSelector((state) => state.customer);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -62,7 +62,7 @@ function ProfileForm() {
 
     async function onSubmit(data: z.infer<typeof formSchema>) {
 
-        const updatedData: User = { ...data, id: user.id, email: user.email };
+        const updatedData: Customer = { ...data, id: user.id, email: user.email };
 
         const { error } = await updateUser(updatedData);
 
@@ -71,7 +71,7 @@ function ProfileForm() {
             return;
         }
 
-        dispatch(setUser(updatedData));
+        dispatch(setCustomer(updatedData));
     }
 
     return (

@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import userReducer from '@/features/auth'
+import customerReducer from '@/features/auth'
 import { base } from '@/services/api'
 
 export const store = configureStore({
   reducer: {
-    user: userReducer,
+    customer: customerReducer,
     [base.reducerPath]: base.reducer,
   },
 

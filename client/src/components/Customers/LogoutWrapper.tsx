@@ -1,5 +1,5 @@
 import { useAppDispatch } from "@/app/hooks";
-import { clearUser } from "@/features/auth";
+import { clearCustomer } from "@/features/auth";
 import { useNavigate } from "react-router-dom";
 
 import { useLogoutCustomerMutation } from "@/services/api";
@@ -19,7 +19,7 @@ function LogoutWrapper({ className, children }: LogoutWrapperProps) {
 
     async function logout() {
         const { error } = await logoutCustomer();
-        dispatch(clearUser());
+        dispatch(clearCustomer());
 
         if (error) {
             console.error(error);

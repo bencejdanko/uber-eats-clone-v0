@@ -1,19 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { User } from '@/types';
-import { clear } from 'console';
+import type { Customer } from '@/types';
 
-const initialState: User = {
+const initialState: Customer = {
     id: '',
     name: '',
     email: '',
 }
 
-export const userSlice = createSlice({
-    name: 'user',
+export const customerSlice = createSlice({
+    name: 'customer',
     initialState,
     reducers: {
-        setUser: (state, action: PayloadAction<User>) => {
+        setCustomer: (state, action: PayloadAction<Customer>) => {
             state.name = action.payload.name;
             state.email = action.payload.email;
             state.id = action.payload.id;
@@ -30,7 +29,7 @@ export const userSlice = createSlice({
                 state.state = action.payload.state;
             }
         },
-        clearUser: (state) => {
+        clearCustomer: (state) => {
             state.id = '';
             state.name = '';
             state.email = '';
@@ -42,5 +41,5 @@ export const userSlice = createSlice({
 })
 
 
-export const { setUser, clearUser } = userSlice.actions
-export default userSlice.reducer
+export const { setCustomer, clearCustomer } = customerSlice.actions
+export default customerSlice.reducer

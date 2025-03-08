@@ -4,7 +4,8 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const initQuery = async (args: any, api: any, extraOptions: any) => {
 
-    await delay(1000);
+    // development load delay simulation
+    // await delay(1000);
 
     const base = fetchBaseQuery({
         baseUrl: "/api",
@@ -21,6 +22,6 @@ const initQuery = async (args: any, api: any, extraOptions: any) => {
 
 export const base = createApi({
     baseQuery: initQuery,
-    tagTypes: ["User"],
+    tagTypes: ["Customer", "Restaurant"],
     endpoints: () => ({}),
 });

@@ -1,41 +1,41 @@
 import { BrowserRouter as Router, Route, Routes, data } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { useCheckSessionQuery } from "./services/api";
+import { useCheckCustomerSessionQuery } from "./services/api";
 
 import { Home } from "./screens";
-import * as customer from "./screens/Customer";
-import * as restaurant from "./screens/Restaurant";
+import * as customerScreens from "./screens/Customer";
+import * as restaurantScreens from "./screens/Restaurant";
 import { useEffect } from "react";
-import { setUser } from "./features/auth";
+import { setCustomer } from "./features/auth";
 
 
 function App() {
 
   const dispatch = useAppDispatch();
-  const { data: user, error } = useCheckSessionQuery();
+  const { data: customer, error } = useCheckCustomerSessionQuery();
 
   useEffect(() => {
-    if (user) {
-      console.log("User session active:", user);
-      dispatch(setUser(user))
+    if (customer) {
+      console.log("Customer session active:", customer);
+      dispatch(setCustomer(customer))
     } else if (error) {
-      console.error("No session active:", error);
+      console.error("No customer session active:", error);
     }
-  }, [user, dispatch, error]);
+  }, [customer, dispatch, error]);
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
 
-        <Route path="customers" element={<customer.Home />} />
-        <Route path="/customers/login" element={<customer.Login />} />
-        <Route path="/customers/signup" element={<customer.SignUp />} />
+        <Route path="customers" element={<customerScreens.Home />} />
+        <Route path="/customers/login" element={<customerScreens.Login />} />
+        <Route path="/customers/signup" element={<customerScreens.SignUp />} />
 
-        <Route path="/restaurants" element={<restaurant.Home />} />
-        <Route path="/restaurants/signup" element={<restaurant.SignUp />} />
-        <Route path="/restaurants/login" element={<restaurant.Login />} />
+        <Route path="/restaurants" element={<restaurantScreens.Home />} />
+        <Route path="/restaurants/signup" element={<restaurantScreens.SignUp />} />
+        <Route path="/restaurants/login" element={<restaurantScreens.Login />} />
       </Routes>
     </Router>
   );

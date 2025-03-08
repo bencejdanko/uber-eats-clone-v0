@@ -91,8 +91,6 @@ exports.updateCustomer = async (req, res) => {
       return res.status(401).json({ message: 'Unauthorized. Please login.' });
     }
 
-    console.log("REQUEST BODY: ", req.body); // Debugging
-
     const { name, country, state } = req.body;
     const customer = await Customer.findByPk(req.params.id);
     if (!customer) return res.status(404).json({ message: 'Customer not found' });
@@ -100,8 +98,6 @@ exports.updateCustomer = async (req, res) => {
     if (name) customer.name = name;
     if (country) customer.country = country;
     if (state) customer.state = state;
-
-    console.log("Updating customer: ", customer); // Debugging
 
     await customer.save();
     res.json(customer);

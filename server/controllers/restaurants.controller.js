@@ -4,16 +4,15 @@ const bcrypt = require('bcryptjs');
 // Signup (create restaurant)
 exports.createRestaurant = async (req, res) => {
   try {
-    const { name, email, password, country, state } = req.body;
-    if (!name || !email || !password || !country || !state) {
+    const { name, email, password, location } = req.body;
+    if (!name || !email || !password || !location) {
       return res.status(400).json({ message: 'Missing required information' });
     }
     const restaurant = await Restaurant.create({
       name,
       email,
       password: bcrypt.hashSync(password, 10),
-      country,
-      state,
+      location,
     });
     res.status(201).json(restaurant);
   } catch (error) {
@@ -39,7 +38,7 @@ exports.loginRestaurant = async (req, res) => {
     }
     // Set restaurant id in session for authentication on protected endpoints
     req.session.restaurantId = restaurant.id;
-    res.status(200).json({ message: 'Logged in successfully', restaurant });
+    res.status(200).json(restaurant);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
