@@ -30,6 +30,10 @@ const extendedApi = base.injectEndpoints({
             query: () => "restaurants/session",
             providesTags: ["Restaurant"],
         }),
+        getRestaurantList: builder.query<Restaurant[], void>({
+            query: () => "restaurants",
+            providesTags: ["Restaurant"],
+        }),
     }),
 });
 
@@ -38,4 +42,5 @@ export const {
     useLoginRestaurantMutation,
     useLogoutRestaurantMutation,
     useCheckRestaurantSessionQuery,
+    useGetRestaurantListQuery,
 } = extendedApi;

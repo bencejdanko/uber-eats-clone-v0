@@ -7,6 +7,9 @@ restaurantRouter.post('/signup', restaurantController.createRestaurant);
 restaurantRouter.post('/login', restaurantController.loginRestaurant);
 restaurantRouter.post('/logout', restaurantController.logoutRestaurant);
 
+// Public endpoints (no session auth required)
+restaurantRouter.get('/', restaurantController.getRestaurants);
+
 // Restaurant-specific endpoints (require the restaurant to be logged in)
 restaurantRouter.get('/:id', restaurantController.getRestaurant);
 restaurantRouter.patch('/:id', restaurantController.updateRestaurant);

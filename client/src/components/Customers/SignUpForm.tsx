@@ -2,8 +2,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { useSignupCustomerMutation } from "@/services/api";
-
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -15,7 +13,6 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
@@ -23,7 +20,7 @@ const formSchema = z.object({
     password: z.string().min(8).max(50),
 });
 
-function SignUpForm() {
+function SignUpForm({ onSubmit }: { onSubmit: (data: z.infer<typeof formSchema>) => Promise<void> }) {
     // const user = useAppSelector((state) => state.user);
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -34,19 +31,6 @@ function SignUpForm() {
             password: "",
         },
     });
-
-    const [signupCustomer] = useSignupCustomerMutation();
-    const navigate = useNavigate();
-    async function onSubmit(data: z.infer<typeof formSchema>) {
-        const { error } = await signupCustomer(data);
-
-        if (error) {
-            console.error(error);
-            return;
-        }
-
-        navigate("customers/login");
-    }
 
     return (
         <Form {...form}>

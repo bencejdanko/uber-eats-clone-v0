@@ -84,6 +84,24 @@ exports.getRestaurant = async (req, res) => {
   }
 };
 
+// Get paginated restaurants
+exports.getRestaurants = async (req, res) => {
+  try {
+    const { page = 1, limit = 10 } = req.body;
+    const offset = (page - 1) * limit;
+    const restaurants = await Restaurant.findAndCountAll({ offset, limit });
+    // remove password field from response
+    restaurants.rows.forEach(restaurant => {
+      restaurant.password = undefined;
+      restaurant.email = undefined;
+    });
+    res.status(200).json(restaurants);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 // Update restaurant details
 exports.updateRestaurant = async (req, res) => {
   try {

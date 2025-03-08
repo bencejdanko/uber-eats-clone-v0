@@ -8,7 +8,7 @@ function Layout({ children }: { children: ReactNode }) {
     return (
         <>
             <SEO
-                title="DishDash | Restaurant Delivery"
+                title="San Jose Restaurants | Restaurant Delivery in San Jose"
                 description="DishDash is a restaurant delivery service."
                 favicon="/icon.svg"
             />

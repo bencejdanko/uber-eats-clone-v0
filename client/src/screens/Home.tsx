@@ -14,11 +14,11 @@ function Home() {
             />
             <div className="flex flex-col w-screen h-screen justify-center">
                 <div className='pl-4'>
-                    <div className="text-5xl font-bold max-w-xl">
-                        Order San Jose<br />delivery near you
+                    <div className="text-5xl font-bold ">
+                        Order San Jose delivery near you
                     </div>
-                    <Link to="/restaurants">
-                        <div className='mt-4 bg-black text-white p-5 rounded-lg inline-block text-2xl'>Search Restaurants</div>
+                    <Link to="/explore">
+                        <div className='mt-4 bg-black text-white p-5 rounded-lg inline-block text-2xl'>Explore Restaurants</div>
                     </Link>
                 </div>
             </div>

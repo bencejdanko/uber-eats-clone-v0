@@ -16,6 +16,8 @@ exports.createCustomer = async (req, res) => {
       country,
       state,
     });
+    req.session.customerId = customer.id;
+    customer.password = undefined;
     res.status(201).json(customer);
   } catch (error) {
     res.status(500).json({ message: error.message });

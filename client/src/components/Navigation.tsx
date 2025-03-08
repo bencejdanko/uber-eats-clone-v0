@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavigationDrawer } from "./NavigationDrawer";
+import Banner from "/banner.svg"
 
 function Navigation() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -40,7 +41,7 @@ function Navigation() {
                     </li>
                     <li>
                         <a href="/">
-                            <span className="text-xl font-bold">Restaurants San Jose</span>
+                            <img src={Banner} alt="Banner" className="h-8" />
                         </a>
                     </li>
                 </div>

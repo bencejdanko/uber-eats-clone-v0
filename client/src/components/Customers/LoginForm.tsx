@@ -14,22 +14,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { setCustomer } from "@/features/auth";
-
-import { useLoginCustomerMutation } from "@/services/api";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-
 const formSchema = z.object({
     email: z.string().min(8).max(50),
     password: z.string().min(8).max(50),
 });
-function LoginForm() {
-
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-
+function LoginForm(
+    { onSubmit }: {
+        onSubmit: (data: z.infer<typeof formSchema>) => Promise<void>;
+    },
+) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -37,27 +30,6 @@ function LoginForm() {
             password: "",
         },
     });
-
-    const user = useAppSelector((state) => state.customer);
-    const [loginCustomer, { isError, isLoading, isSuccess}] = useLoginCustomerMutation();
-
-    async function onSubmit(data: z.infer<typeof formSchema>) {
-        
-        const { error, data: customer } = await loginCustomer(data);
-
-        if (error) {
-            console.error(error);
-            return;
-        }
-
-        dispatch(setCustomer(customer));
-    }
-
-    useEffect(() => {
-        if (user.id && isSuccess) {
-            navigate("/customers");
-        }
-    }, [user, isSuccess, navigate]);
 
     return (
         <Form {...form}>
@@ -69,7 +41,11 @@ function LoginForm() {
                         <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                                <Input type='email' placeholder="example@example.com" {...field} />
+                                <Input
+                                    type="email"
+                                    placeholder="example@example.com"
+                                    {...field}
+                                />
                             </FormControl>
                             <FormDescription>
                                 This is your email that we can contact.
@@ -81,12 +57,15 @@ function LoginForm() {
                 <FormField
                     control={form.control}
                     name="password"
-                    
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                                <Input type='password' placeholder="Enter your name..." {...field} />
+                                <Input
+                                    type="password"
+                                    placeholder="Enter your name..."
+                                    {...field}
+                                />
                             </FormControl>
                             <FormDescription>
                                 This will be the password for your account.

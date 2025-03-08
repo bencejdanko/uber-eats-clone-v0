@@ -25,6 +25,7 @@ const formSchema = z.object({
     email: z.string().min(8).max(50),
     password: z.string().min(8).max(50),
 });
+
 function LoginForm() {
 
     const dispatch = useAppDispatch();

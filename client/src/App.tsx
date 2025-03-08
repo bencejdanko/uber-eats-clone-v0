@@ -27,6 +27,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<screens.Home />} />
+        <Route path="/explore" element={<screens.Explore />} />
 
         <Route path="customers" element={<screens.Customer.Home />} />
         <Route path="/customers/login" element={<screens.Customer.Auth.Login />} />
