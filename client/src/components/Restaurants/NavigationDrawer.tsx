@@ -6,7 +6,7 @@ import {
     DrawerTitle,
 } from "@/components/ui/drawer";
 
-import { LogoutWrapper } from ".";
+import { LogoutWrapper } from "@/components/Restaurants";
 
 import Icon from "/icon.svg";
 

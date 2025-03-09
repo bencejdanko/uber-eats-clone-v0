@@ -64,9 +64,11 @@ exports.loginRestaurant = async (req, res) => {
 exports.logoutRestaurant = async (req, res) => {
   try {
     if (!req.session.customerId) {
+      console.log("Destroying session")
       session.destroy();
     } else {
-      req.session.restaurantId = null;
+      console.log("Getting out of session")
+      req.session.restaurantId = undefined;
     }
     res.status(200).json({ message: 'Logged out successfully' });
   } catch (error) {
@@ -136,23 +138,27 @@ exports.updateRestaurant = async (req, res) => {
   }
 };
 
-// Add RestaurantTimings
-exports.addRestaurantTimings = async (req, res) => {
+exports.putRestaurantTiming = async (req, res) => {
   try {
     if (!isAuthorized(req)) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-    const { day, openTime, closeTime } = req.body;
-    if (!day || !openTime || !closeTime) {
-      return res.status(400).json({ message: 'Missing RestaurantTiming information' });
+
+    const { day_of_week, open_time, close_time, closed, restaurant_id } = req.body;
+    console.log(JSON.stringify(req.body, null, 2));
+    if (!day_of_week || !restaurant_id) {
+      return res.status(400).json({ message: 'Day and restaurant ID is required' });
     }
-    const RestaurantTiming = await RestaurantTiming.create({
-      restaurantId: req.params.id,
-      day,
-      openTime,
-      closeTime,
+
+    const [restaurantTiming, created] = await RestaurantTiming.upsert({
+      restaurant_id: req.params.id,
+      day_of_week,
+      open_time: open_time || null,
+      close_time: close_time || null,
+      closed: closed || false,
     });
-    res.status(201).json(RestaurantTiming);
+
+    res.status(201).json({ restaurantTiming, created });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
@@ -162,10 +168,7 @@ exports.addRestaurantTimings = async (req, res) => {
 // Get RestaurantTimings
 exports.getRestaurantTimings = async (req, res) => {
   try {
-    if (!isAuthorized(req)) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-    const RestaurantTimings = await RestaurantTiming.findAll({ where: { restaurantId: req.params.id } });
+    const RestaurantTimings = await RestaurantTiming.findAll({ where: { restaurant_id: req.params.id } });
     res.status(200).json(RestaurantTimings);
   } catch (error) {
     console.error(error);

@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, data } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { useCheckCustomerSessionQuery } from "./services/api";
+import { useCheckCustomerSessionQuery, useGetTimingsQuery } from "./services/api";
 
 import * as screens from "./screens";
 
@@ -19,7 +19,6 @@ function App() {
   const { data: customer, error } = useCheckCustomerSessionQuery();
   const { data: restaurant, error: restaurantError } = useCheckRestaurantSessionQuery();
 
-
   useEffect(() => {
     if (customer) {
       console.log("Customer session active:", customer);
@@ -33,6 +32,7 @@ function App() {
     if (restaurant) {
       console.log("Restaurant session active:", restaurant);
       dispatch(setRestaurant(restaurant));
+
     } else if (restaurantError) {
       console.error("No restaurant session active:", restaurantError);
     }

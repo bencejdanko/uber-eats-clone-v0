@@ -14,9 +14,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-
 const formSchema = z.object({
     email: z.string().min(8).max(50),
     password: z.string().min(8).max(50),

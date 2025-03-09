@@ -15,3 +15,11 @@ export interface Restaurant {
     description?: string;
     contact_info: string;
 }
+
+export interface RestaurantTiming {
+    restaurant_id: string;
+    day_of_week: string;
+    open_time?: string;
+    close_time?: string;
+    closed?: boolean;
+}

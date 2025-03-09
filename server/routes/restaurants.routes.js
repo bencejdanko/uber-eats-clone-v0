@@ -14,7 +14,7 @@ restaurantRouter.get('/', restaurantController.getRestaurants);
 // Restaurant-specific endpoints (require the restaurant to be logged in)
 restaurantRouter.get('/:id', restaurantController.getRestaurant);
 restaurantRouter.patch('/:id', restaurantController.updateRestaurant);
-restaurantRouter.post('/:id/timings', restaurantController.addRestaurantTimings);
+restaurantRouter.put('/:id/timings', restaurantController.putRestaurantTiming);
 restaurantRouter.get('/:id/timings', restaurantController.getRestaurantTimings);
 restaurantRouter.post('/:id/images', restaurantController.uploadRestaurantImage);
 restaurantRouter.get('/:id/images', restaurantController.getRestaurantImages);

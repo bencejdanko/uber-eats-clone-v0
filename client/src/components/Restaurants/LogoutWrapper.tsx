@@ -14,7 +14,6 @@ interface LogoutWrapperProps {
 
 function LogoutWrapper({ className, children }: LogoutWrapperProps) {
     const dispatch = useAppDispatch();
-    const [logoutSuccess, setLogoutSuccess] = useState(false);
 
     const [logoutRestaurant, { isError, isLoading, isSuccess }] =
         useLogoutRestaurantMutation();
@@ -24,19 +23,19 @@ function LogoutWrapper({ className, children }: LogoutWrapperProps) {
         dispatch(clearRestaurant());
         if (error) {
             console.error(error);
+            return
         }
-        setLogoutSuccess(true);
     }
 
     useEffect(() => {
-        if (logoutSuccess) {
+        if (isSuccess) {
             window.location.href = "/";
         }
-    }, [logoutSuccess]);
+    }, [isSuccess]);
 
     return (
         <div className="flex items-center p-2 gap-2">
-            <button className={className} onClick={logout}>{children}</button>
+            <div className={className} onClick={logout}>{children}</div>
             {" "}
             {isLoading && <Loader2 className="animate-spin" />}
         </div>

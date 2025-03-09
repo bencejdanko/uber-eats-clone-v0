@@ -3,27 +3,27 @@
 module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.createTable('RestaurantTimings', {
-            id: {
-                type: Sequelize.INTEGER,
-                primaryKey: true,
-                autoIncrement: true,
-                allowNull: false,
-            },
             restaurant_id: {
                 type: Sequelize.INTEGER,
+                primaryKey: true,
                 allowNull: false,
             },
             day_of_week: {
-                type: Sequelize.STRING,
+                type: Sequelize.ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'),
+                primaryKey: true,
                 allowNull: false,
             },
             open_time: {
                 type: Sequelize.TIME,
-                allowNull: false,
+                allowNull: true,
             },
             close_time: {
                 type: Sequelize.TIME,
-                allowNull: false,
+                allowNull: true,
+            },
+            closed: {
+                type: Sequelize.BOOLEAN,
+                allowNull: true,
             },
             createdAt: {
                 allowNull: false,
