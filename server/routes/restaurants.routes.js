@@ -202,6 +202,29 @@ restaurantRouter.delete('/:id/images/:imageId', restaurantController.deleteResta
  *     parameters:
  *       - in: path
  *         name: id
+ *     properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *     responses:
+ *       201:
+ *         description: Dish added successfully
+ *       401:
+ *         description: Unauthorized
+ */
+restaurantRouter.post('/:id/dishes', restaurantController.addDish);
+/**
+ * @swagger
+ * /api/restaurants/{id}/dishes:
+ *   get:
+ *     summary: get all dishes from restaurant menu
+ *     tags: [Dishes]
+ *     parameters:
+ *       - in: path
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
@@ -222,13 +245,41 @@ restaurantRouter.delete('/:id/images/:imageId', restaurantController.deleteResta
  *               price:
  *                 type: number
  *     responses:
- *       201:
- *         description: Dish added successfully
+ *       200:
+ *          description: Successfully updated
  *       401:
  *         description: Unauthorized
+ *       500:
+ *          description: Internal server error
  */
-restaurantRouter.post('/:id/dishes', restaurantController.addDish);
 restaurantRouter.get('/:id/dishes', restaurantController.getDishes);
+/**
+ * @swagger
+ * /api/restaurants/{id}/dishes/{dishId}:
+ *   get:
+ *     summary: get specific dish from restaurant menu
+ *     tags: [Dishes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *     responses:
+ *       200:
+ *          description: Successfully updated
+ *       500:
+ *          description: Internal server error
+ */
 restaurantRouter.get('/:id/dishes/:dishId', restaurantController.getDish);
 restaurantRouter.patch('/:id/dishes/:dishId', restaurantController.updateDish);
 restaurantRouter.delete('/:id/dishes/:dishId', restaurantController.deleteDish);
@@ -270,6 +321,16 @@ restaurantRouter.get('/:id/orders/:orderId', restaurantController.getOrder);
  *         description: Unauthorized
  */
 restaurantRouter.patch('/:id/orders/:orderId', restaurantController.updateOrder);
+/**
+ * @swagger
+ * /api/restaurants/{id}/menu:
+ *   delete:
+ *     summary: Deletes entire menu for the restaurant
+ *     tags: [Restaurants]
+ *     responses:
+ *       200:
+ *         description: Specific restaurant's menu deleted successfully
+ */
 restaurantRouter.delete('/:id/menu', restaurantController.deleteMenu);
 
 module.exports = restaurantRouter;
