@@ -15,8 +15,9 @@ app.use(session({
     cookie: { secure: false, sameSite: 'Lax' }
 }))
 
-app.use(express.json());
 
+app.use('/api/customers', express.json(), routers.customerRouter)
+app.use('/api/restaurants', express.json(), routers.restaurantRouter)
 // Swagger setup
 const swaggerOptions = {
     definition: {

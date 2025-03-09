@@ -3,27 +3,28 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   const RestaurantTiming = sequelize.define('RestaurantTiming', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
     restaurant_id: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       allowNull: false,
     },
     day_of_week: {
       type: DataTypes.STRING,
+      primaryKey: true,
       allowNull: false,
     },
     open_time: {
       type: DataTypes.TIME,
-      allowNull: false,
+      allowNull: true,
     },
     close_time: {
       type: DataTypes.TIME,
-      allowNull: false,
-    }
+      allowNull: true,
+    },
+    closed: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    },
   }, {});
   return RestaurantTiming;
 };

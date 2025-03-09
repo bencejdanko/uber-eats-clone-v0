@@ -6,6 +6,7 @@ const { restaurantController } = require('../controllers');
 restaurantRouter.post('/signup', restaurantController.createRestaurant);
 restaurantRouter.post('/login', restaurantController.loginRestaurant);
 restaurantRouter.post('/logout', restaurantController.logoutRestaurant);
+restaurantRouter.get('/session', restaurantController.getSession);
 
 // Public endpoints (no session auth required)
 restaurantRouter.get('/', restaurantController.getRestaurants);
@@ -29,7 +30,7 @@ restaurantRouter.get('/:id', restaurantController.getRestaurant);
  *         description: Successfully updated
  */
 restaurantRouter.patch('/:id', restaurantController.updateRestaurant);
-restaurantRouter.post('/:id/timings', restaurantController.addRestaurantTimings);
+restaurantRouter.put('/:id/timings', restaurantController.putRestaurantTiming);
 restaurantRouter.get('/:id/timings', restaurantController.getRestaurantTimings);
 restaurantRouter.post('/:id/images', restaurantController.uploadRestaurantImage);
 restaurantRouter.get('/:id/images', restaurantController.getRestaurantImages);

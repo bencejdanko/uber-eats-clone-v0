@@ -1,3 +1,4 @@
+const session = require('express-session');
 const { Customer, Order, Cart, CartItem, Favorite } = require('../models');
 const bcrypt = require('bcryptjs');
 
@@ -63,10 +64,12 @@ exports.loginCustomer = async (req, res) => {
 // Logout customer
 exports.logoutCustomer = async (req, res) => {
   try {
-    req.session.destroy(err => {
-      if (err) return res.status(500).json({ message: 'Error logging out' });
-      res.json({ message: 'Logged out successfully' });
-    });
+    if (!req.session.restaurantId) {
+      req.session.destroy();
+    } else {
+      req.session.customerId = undefined;
+    }
+    res.json({ message: 'Logged out successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

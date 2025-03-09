@@ -14,22 +14,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { setCustomer } from "@/features/auth";
-
-import { useLoginCustomerMutation } from "@/services/api";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-
 const formSchema = z.object({
     email: z.string().min(8).max(50),
     password: z.string().min(8).max(50),
 });
 
-function LoginForm() {
-
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+function LoginForm({ onSubmit }: { onSubmit: (data: z.infer<typeof formSchema>) => void }) {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -38,28 +28,6 @@ function LoginForm() {
             password: "",
         },
     });
-
-    const customer = useAppSelector((state) => state.customer);
-    const [loginCustomer, { isError, isLoading, isSuccess}] = useLoginCustomerMutation();
-
-    async function onSubmit(data: z.infer<typeof formSchema>) {
-        
-        const { error, data: customer } = await loginCustomer(data);
-
-        if (error) {
-            console.error(error);
-            return;
-        }
-
-
-        dispatch(setCustomer(customer));
-    }
-
-    useEffect(() => {
-        if (customer.id && isSuccess) {
-            navigate("/customers");
-        }
-    }, [customer, isSuccess, navigate]);
 
     return (
         <Form {...form}>

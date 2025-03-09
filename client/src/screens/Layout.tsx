@@ -3,8 +3,12 @@ import { SEO } from "@/components";
 import { Navigation } from "@/components";
 import { NavigationFooter } from "@/components";
 import { LegalFooter } from "@/components";
+import { useAppSelector } from "@/app/hooks";
 
 function Layout({ children }: { children: ReactNode }) {
+
+    const customer = useAppSelector((state) => state.customer)
+    const restaurant = useAppSelector((state) => state.restaurant)
     return (
         <>
             <SEO
@@ -12,7 +16,7 @@ function Layout({ children }: { children: ReactNode }) {
                 description="DishDash is a restaurant delivery service."
                 favicon="/icon.svg"
             />
-            <header><Navigation /></header>
+            <header><Navigation customer={customer} restaurant={restaurant} /></header>
             <main>{children}</main>
             <hr className='my-2' />
             <footer>

@@ -2,7 +2,7 @@ import { LoginForm } from "@/components/Customers";
 import { Link } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { setCustomer } from "@/features/auth";
+import { setCustomer } from "@/features/customers/auth";
 import { useLoginCustomerMutation } from "@/services/api";
 import { useNavigate } from "react-router-dom";
 
@@ -28,7 +28,7 @@ function Login() {
 
     return (
         <>
-            <div className="p-5 border shadow-lg m-5 mx-auto max-w-md rounded-lg">
+            <div className="p-5 border shadow-lg m-5 mx-auto max-w-lg rounded-lg">
                 <a href="/">
                     <div className="mb-2 text-sm">Return</div>
                 </a>
@@ -36,12 +36,11 @@ function Login() {
                 <LoginForm onSubmit={onSubmit} />
 
 
-                <div className="flex justify-center text-center">
+                <div className="flex justify-center">
                     {(isLoading || isSuccess) && (
                         <LoadingSpinnerToCheck
                             isSuccess={isSuccess}
-                            successMessage="Logged in"
-                            onComplete={() => navigate("/customers")}
+                            onComplete={() => navigate("/explore")}
                         />
                     )}
                     {(isError) && (

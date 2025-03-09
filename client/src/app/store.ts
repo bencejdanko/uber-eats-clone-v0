@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import customerReducer from '@/features/auth'
+import customerReducer from '@/features/customers/auth'
+import restaurantReducer from '@/features/restaurants/auth'
 import { base } from '@/services/api'
 
 export const store = configureStore({
   reducer: {
     customer: customerReducer,
+    restaurant: restaurantReducer,
     [base.reducerPath]: base.reducer,
   },
 

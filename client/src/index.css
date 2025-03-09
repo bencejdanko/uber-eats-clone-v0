@@ -141,11 +141,4 @@
   body {
     @apply bg-background text-foreground;
   }
-  a {
-    @apply underline;
-  }
-
-  a:hover {
-    @apply decoration-2;
-  }
 }

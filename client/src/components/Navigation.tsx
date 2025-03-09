@@ -3,9 +3,13 @@ import { Link } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavigationDrawer } from "./NavigationDrawer";
-import Banner from "/banner.svg"
+import Banner from "/banner.svg";
+import { ShoppingCart } from "lucide-react";
+import { Customer, Restaurant } from "@/types";
 
-function Navigation() {
+function Navigation(
+    { customer, restaurant }: { customer: Customer; restaurant: Restaurant },
+) {
     const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
@@ -29,13 +33,14 @@ function Navigation() {
                 isScrolled ? "bg-white" : "bg-transparent"
             }`}
         >
-            <ul className="flex justify-between p-5">
-                <div className="flex gap-5">
+            <ul className="flex justify-between p-5 items-center">
+                <div className="flex gap-5 items-center">
                     <li>
-                        <NavigationDrawer>
+                        <NavigationDrawer customer={customer}>
                             <div className="relative group">
                                 <Menu className="relative z-10" size={32} />
-                                <div className="absolute inset-0 rounded-full bg-[#f3f3f3] opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-150"></div>
+                                <div className="absolute inset-0 rounded-full bg-[#f3f3f3] opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-150">
+                                </div>
                             </div>
                         </NavigationDrawer>
                     </li>
@@ -44,22 +49,76 @@ function Navigation() {
                             <img src={Banner} alt="Banner" className="h-8" />
                         </a>
                     </li>
+                    {restaurant.name && (
+                        <li>
+                            <Link to="/restaurants">
+                                <div className=" rounded">
+                                    <span className="text-sm">Manage</span>{" "}
+                                    <br />
+                                    <span className='text-lg font-bold'>{restaurant.name}</span>
+                                </div>
+                            </Link>
+                        </li>
+                    )}
                 </div>
-                <div className="flex gap-5">
-                    <li>
-                        <a href="/customers/login">
-                            <Button variant="outline">
-                                Login
-                            </Button>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/customers/signup">
-                            <Button>
-                                Sign up
-                            </Button>
-                        </a>
-                    </li>
+                <div className="flex gap-10 pr-10 items-center">
+                    {!customer.name
+                        ? (
+                            <>
+                                <li>
+                                    <a href="/customers/login">
+                                        <Button variant="outline">
+                                            Login
+                                        </Button>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/customers/signup">
+                                        <Button>
+                                            Sign up
+                                        </Button>
+                                    </a>
+                                </li>
+                            </>
+                        )
+                        : (
+                            <>
+                                <li>
+                                    <Link to="/customers">
+                                        <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
+                                            <div className="text-xs">
+                                                Hello, {customer.name}
+                                            </div>
+                                            <div className="font-bold">
+                                                Account
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/customers">
+                                        <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
+                                            <div className="text-xs">
+                                                Payments
+                                            </div>
+                                            <div className="font-bold">
+                                                & Orders
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/restaurants/login">
+                                        <div className="bg-white p-2 rounded-lg flex gap-2 items-center border-2 border-transparent hover:border-black">
+                                            <ShoppingCart size={36} />
+                                            <span className="font-bold">
+                                                Cart
+                                            </span>
+                                        </div>
+                                    </Link>
+                                </li>
+                            </>
+                        )}
                 </div>
             </ul>
         </nav>

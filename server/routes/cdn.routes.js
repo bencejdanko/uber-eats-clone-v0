@@ -2,6 +2,9 @@ const express = require('express');
 const cdnRouter = express.Router();
 const { cdnController } = require('../controllers');
 
-cdnRouter.post('/upload', cdnController.uploadFile);
+const multer = require('multer');
+const upload = multer();
+
+cdnRouter.post('/uploadAvatar', upload.single("file"), cdnController.uploadAvatar);
 
 module.exports = cdnRouter;
