@@ -1,11 +1,11 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 
-import { useLogoutCustomerMutation } from "@/services/api";
+import { useLogoutRestaurantMutation } from "@/services/api";
 import { useEffect, useState } from "react";
 
 import { Loader2 } from "lucide-react";
 
-import { clearCustomer } from "@/features/customers/auth";
+import { clearRestaurant } from "@/features/restaurants/auth";
 
 interface LogoutWrapperProps {
     className: string;
@@ -16,14 +16,12 @@ function LogoutWrapper({ className, children }: LogoutWrapperProps) {
     const dispatch = useAppDispatch();
     const [logoutSuccess, setLogoutSuccess] = useState(false);
 
-
-    const [logoutCustomer, { isError, isLoading, isSuccess }] =
-        useLogoutCustomerMutation();
-
+    const [logoutRestaurant, { isError, isLoading, isSuccess }] =
+        useLogoutRestaurantMutation();
 
     async function logout() {
-        const { error } = await logoutCustomer();
-        dispatch(clearCustomer());
+        const { error } = await logoutRestaurant();
+        dispatch(clearRestaurant());
         if (error) {
             console.error(error);
         }
@@ -37,7 +35,7 @@ function LogoutWrapper({ className, children }: LogoutWrapperProps) {
     }, [logoutSuccess]);
 
     return (
-        <div className='flex items-center p-2 gap-2'>
+        <div className="flex items-center p-2 gap-2">
             <button className={className} onClick={logout}>{children}</button>
             {" "}
             {isLoading && <Loader2 className="animate-spin" />}

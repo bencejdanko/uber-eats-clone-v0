@@ -10,10 +10,11 @@ function Layout({ children }: { children: ReactNode }) {
                 favicon="/icon.svg"
             />
             <header>
-                <div className="bg-black text-white p-5 font-bold">
+                <div className="bg-white text-black p-5 font-bold">
                     Restaurants San Jose
                 </div>
             </header>
+            <div className='-z-10 absolute w-screen h-screen bg-black'></div>
             <main>{children}</main>
         </>
     );

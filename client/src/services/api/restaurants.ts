@@ -34,6 +34,15 @@ const extendedApi = base.injectEndpoints({
             query: () => "restaurants",
             providesTags: ["Restaurant"],
         }),
+        updateRestaurant: builder.mutation<Restaurant, Partial<Restaurant>>({
+            query: (body) => ({
+                url: `restaurants/${body.id}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["Restaurant"],
+        }),
+
     }),
 });
 
@@ -43,4 +52,5 @@ export const {
     useLogoutRestaurantMutation,
     useCheckRestaurantSessionQuery,
     useGetRestaurantListQuery,
+    useUpdateRestaurantMutation,
 } = extendedApi;

@@ -2,7 +2,7 @@ export interface Customer {
     id: string;
     name: string;
     email: string;
-    profilePicture?: string;
+    profile_picture?: string;
     country?: string;
     state?: string;
 }

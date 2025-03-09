@@ -13,10 +13,9 @@ app.use(session({
     cookie: { secure: false, sameSite: 'Lax' }
 }))
 
-app.use(express.json());
 
-app.use('/api/customers', routers.customerRouter)
-app.use('/api/restaurants', routers.restaurantRouter)
+app.use('/api/customers', express.json(), routers.customerRouter)
+app.use('/api/restaurants', express.json(), routers.restaurantRouter)
 app.use('/api/cdn', routers.cdnRouter)
 
 app.listen(5000, function () {

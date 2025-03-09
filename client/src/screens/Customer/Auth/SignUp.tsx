@@ -4,15 +4,12 @@ import { SignUpForm } from "@/components/Customers";
 import { useSignupCustomerMutation } from "@/services/api";
 import { useNavigate } from "react-router-dom";
 import { LoadingSpinnerToCheck } from "@/components";
-import { setCustomer } from "@/features/auth";
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { useEffect } from "react";
+import { setCustomer } from "@/features/customers/auth";
+import { useAppDispatch } from "@/app/hooks";
 
 function SignUp() {
-
-
-    const [signupCustomer, { isError, isLoading, isSuccess }] = useSignupCustomerMutation();
-    const customer = useAppSelector((state) => state.customer);
+    const [signupCustomer, { isError, isLoading, isSuccess }] =
+        useSignupCustomerMutation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
@@ -24,18 +21,8 @@ function SignUp() {
             return;
         }
 
-        dispatch(setCustomer(customer))
+        dispatch(setCustomer(customer));
     }
-
-    useEffect(() => {
-        if (customer.id && isSuccess) {
-            const timer = setTimeout(() => {
-                navigate("/customers");
-            }, 500);
-
-            return () => clearTimeout(timer);
-        }
-    }, [customer, isSuccess, navigate]);
 
     return (
         <div className="p-5 border shadow-lg m-5 mx-auto max-w-md rounded-lg">
@@ -45,15 +32,24 @@ function SignUp() {
             <h1 className="text-2xl mb-5 font-bold">Sign Up</h1>
             <SignUpForm onSubmit={onSubmit} />
 
-            {isError && <div>Error</div>}
-            {isSuccess && <div>Success</div>}
-
-            {isLoading && <LoadingSpinnerToCheck />}
+            <div className="flex justify-center">
+                {(isLoading || isSuccess) && (
+                    <LoadingSpinnerToCheck
+                        isSuccess={isSuccess}
+                        onComplete={() => navigate("/explore")}
+                    />
+                )}
+                {isError && (
+                    <div className="text-red-500">
+                        Oops, something went wrong. <br />{" "}
+                        Please check your email and password.
+                    </div>
+                )}
+            </div>
 
             <div className="flex justify-end">
                 <Link to="/customers/login">Log in</Link>
             </div>
-
         </div>
     );
 }

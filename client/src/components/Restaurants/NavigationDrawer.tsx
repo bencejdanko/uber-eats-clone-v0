@@ -6,22 +6,22 @@ import {
     DrawerTitle,
 } from "@/components/ui/drawer";
 
-import { LogoutWrapper } from "./Customers";
+import { LogoutWrapper } from ".";
 
 import Icon from "/icon.svg";
 
 import { Button } from "@/components/ui/button";
-import { Customer } from "@/types";
+import { Restaurant } from "@/types";
 
 function NavigationDrawer(
-    { children, customer }: { children: React.ReactNode; customer: Customer },
+    { children, restaurant }: { children: React.ReactNode; restaurant: Restaurant },
 ) {
     return (
         <Drawer direction="left">
             <DrawerTrigger>{children}</DrawerTrigger>
             <DrawerContent className="p-4 flex flex-col gap-4">
-                <DrawerTitle tabIndex={-1} ref={(el) => el && el.focus()}>Menu</DrawerTitle>
-                {!customer.name
+                <DrawerTitle tabIndex={-1} ref={(el) => el && el.focus()}>Restaurant Portal</DrawerTitle>
+                {!restaurant.name
                     ? (
                         <>
                             <a className="w-full" href="customers/signup">
@@ -39,14 +39,13 @@ function NavigationDrawer(
                     )
                     : (
                         <>
-                        Welcome, {customer.name}
+                        Welcome, {restaurant.name}
                         <LogoutWrapper className='w-full'>
                             <Button variant='destructive' className="w-full h-18">Log out</Button>
                         </LogoutWrapper>
                         </>
                     )}
 
-                <a href="restaurants/login">Add your restaurant</a>
                 <DrawerFooter>
                     <img src={Icon} alt="Icon" className="h-56" />
                 </DrawerFooter>

@@ -13,44 +13,42 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-
-import { Customer } from "@/types";
+import { Restaurant } from "@/types";
 import { useEffect } from "react";
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
-    country: z.string().min(2).max(50).optional(),
-    state: z.string().min(2).max(50).optional(),
+    description: z.string().max(255),
+    location: z.string().max(255),
+    contact_info: z.string().max(255),
 });
 
-function ProfileForm({ customer, onSubmit }: { customer: Customer, onSubmit: (data: any) => void }) {
-
+function ProfileForm(
+    { restaurant, onSubmit }: {
+        restaurant: Restaurant;
+        onSubmit: (data: any) => void;
+    },
+) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: customer.name || "",
-            country: customer.country || "",
-            state: customer.state || "",
+            name: restaurant.name || "",
+            description: restaurant.description || "",
+            location: restaurant.location || "",
+            contact_info: restaurant.contact_info || "",
         },
     });
 
     useEffect(() => {
         form.reset({
-            name: customer.name || "",
-            country: customer.country || "",
-            state: customer.state || "",
+            name: restaurant.name || "",
+            description: restaurant.description || "",
+            location: restaurant.location || "",
+            contact_info: restaurant.contact_info || "",
         });
-    }, [customer]);
+    }, [restaurant]);
 
     const countries = [
         { value: "US", label: "United States" },
@@ -60,7 +58,10 @@ function ProfileForm({ customer, onSubmit }: { customer: Customer, onSubmit: (da
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 justify-end flex flex-col">
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8 justify-end flex flex-col"
+            >
                 <FormField
                     control={form.control}
                     name="name"
@@ -74,7 +75,7 @@ function ProfileForm({ customer, onSubmit }: { customer: Customer, onSubmit: (da
                                 />
                             </FormControl>
                             <FormDescription>
-                                This is your public display name.
+                                This is the display name of your business.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -83,51 +84,58 @@ function ProfileForm({ customer, onSubmit }: { customer: Customer, onSubmit: (da
 
                 <FormField
                     control={form.control}
-                    name="country"
+                    name="description"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Country</FormLabel>
+                            <FormLabel>Description</FormLabel>
                             <FormControl>
-                                <Select 
-                                onValueChange={field.onChange}
-                                
-                                {...field}>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select a country..." />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup >
-                                            {countries.map((country) => (
-                                                <SelectItem key={country.value} value={country.value}>
-                                                    <SelectLabel>{country.label}</SelectLabel>
-                                                </SelectItem>
-                                            ))}
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </FormControl>
-                            <FormDescription>
-                                This is your country.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
-                    name="state"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>State</FormLabel>
-                            <FormControl>
-                                <Input
-                                    placeholder="Enter your state..."
+                                <Textarea
+                                    placeholder="Enter your description..."
                                     {...field}
                                 />
                             </FormControl>
                             <FormDescription>
-                                This is your state.
+                                Describe your restaurants to potential customers.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Location</FormLabel>
+                            <FormControl>
+                                <Textarea
+                                    placeholder="Enter your location..."
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormDescription>
+                                This the location of your business.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="contact_info"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Contact Information</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="Enter your contact information..."
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormDescription>
+                                This how customers can contact you.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>

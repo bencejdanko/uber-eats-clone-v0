@@ -6,6 +6,7 @@ const { restaurantController } = require('../controllers');
 restaurantRouter.post('/signup', restaurantController.createRestaurant);
 restaurantRouter.post('/login', restaurantController.loginRestaurant);
 restaurantRouter.post('/logout', restaurantController.logoutRestaurant);
+restaurantRouter.get('/session', restaurantController.getSession);
 
 // Public endpoints (no session auth required)
 restaurantRouter.get('/', restaurantController.getRestaurants);
