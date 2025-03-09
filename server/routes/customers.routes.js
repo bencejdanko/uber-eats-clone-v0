@@ -235,6 +235,60 @@ customerRouter.delete('/:id/cart', customerController.clearCustomerCart);
  *         description: Item added to cart
  */
 customerRouter.post('/:id/cart/items', customerController.addItemToCart);
+/**
+ * @swagger
+ * /api/customers/{id}/cart/items/{itemId}:
+ *   patch:
+ *     summary: Update item in cart
+ *     description: Updates the quantity of a specific item in the customer's cart.
+ *     tags: [Cart]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Unique identifier of the customer
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: itemId
+ *         required: true
+ *         description: Unique identifier of the cart item to be updated
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - quantity
+ *             properties:
+ *               quantity:
+ *                 type: integer
+ *                 description: Updated quantity of the item in the cart
+ *     responses:
+ *       200:
+ *         description: Cart item successfully updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Cart item updated successfully
+ *       400:
+ *         description: Bad request, missing or invalid parameters
+ *       401:
+ *          description: Unauthorized
+ *       403:
+ *          description: Forbidden - item doesn't belong to the customer
+ *       404:
+ *         description: Cart item not found
+ *       500:
+ *         description: Internal server error
+ */
 customerRouter.patch('/:id/cart/items/:itemId', customerController.updateCartItem);
 /**
  * @swagger
@@ -260,8 +314,12 @@ customerRouter.patch('/:id/cart/items/:itemId', customerController.updateCartIte
  *         description: Cart item removed successfully
  *       401:
  *         description: Unauthorized
+ *       403:
+ *          description: Forbidden - item doesn't belong to the customer
  *       404:
  *         description: Cart item not found
+ *       500:
+ *          description: Internal server error
  */
 customerRouter.delete('/:id/cart/items/:itemId', customerController.deleteCartItem);
 
@@ -303,6 +361,10 @@ customerRouter.delete('/:id/cart/items/:itemId', customerController.deleteCartIt
  *     responses:
  *       201:
  *         description: Added to favorites
+ *       401:
+ *          description: Unauthorized
+ *       500:
+ *         description: Internal server error
  */
 customerRouter.get('/:id/favorites', customerController.getFavorites);
 /**

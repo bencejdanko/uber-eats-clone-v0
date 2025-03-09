@@ -269,6 +269,44 @@ restaurantRouter.post('/:id/images', restaurantController.uploadRestaurantImage)
  *         description: List of restaurant images
  */
 restaurantRouter.get('/:id/images', restaurantController.getRestaurantImages);
+/**
+ * @swagger
+ * /api/restaurants/{id}/images/{imageId}:
+ *   delete:
+ *     summary: Delete a restaurant image
+ *     description: Removes a specific image from the restaurant's image collection.
+ *     tags: [Restaurants]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Unique identifier of the restaurant
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: imageId
+ *         required: true
+ *         description: Unique identifier of the image to be deleted
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Image successfully deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Image deleted successfully
+ *       400:
+ *         description: Bad request, missing or invalid parameters
+ *       404:
+ *         description: Restaurant or image not found
+ *       500:
+ *         description: Internal server error
+ */
 restaurantRouter.delete('/:id/images/:imageId', restaurantController.deleteRestaurantImage);
 
 /**
@@ -399,6 +437,44 @@ restaurantRouter.get('/:id/dishes/:dishId', restaurantController.getDish);
  *         description: Dish not found
  */
 restaurantRouter.patch('/:id/dishes/:dishId', restaurantController.updateDish);
+/**
+ * @swagger
+ * /api/restaurants/{id}/dishes/{dishId}:
+ *   delete:
+ *     summary: Delete a dish
+ *     description: Removes a specific dish from the restaurant's menu.
+ *     tags: [Dishes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Unique identifier of the restaurant
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: dishId
+ *         required: true
+ *         description: Unique identifier of the dish to be deleted
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Dish successfully deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Dish deleted successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Dish not found
+ *       500:
+ *         description: Internal server error
+ */
 restaurantRouter.delete('/:id/dishes/:dishId', restaurantController.deleteDish);
 /**
  * @swagger
