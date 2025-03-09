@@ -67,6 +67,16 @@ customerRouter.post('/signup', customerController.createCustomer);
  *         description: Invalid credentials
  */
 customerRouter.post('/login', customerController.loginCustomer);
+/**
+ * @swagger
+ * /api/customers/logout:
+ *   post:
+ *     summary: Logout from customer account
+ *     tags: [Customers]
+ *     responses:
+ *       200:
+ *         description: Successfully logged out
+ */
 customerRouter.post('/logout', customerController.logoutCustomer);
 
 /**
@@ -101,6 +111,11 @@ customerRouter.get('/session', customerController.getSession);
  *         description: Customer details retrieved
  *       401:
  *         description: Unauthorized
+ */
+customerRouter.get('/:id', customerController.getCustomerById);
+/**
+ * @swagger
+ * /api/customers/{id}:
  *   patch:
  *     summary: Update customer details
  *     tags: [Customers]
@@ -126,7 +141,6 @@ customerRouter.get('/session', customerController.getSession);
  *       200:
  *         description: Customer updated successfully
  */
-customerRouter.get('/:id', customerController.getCustomerById);
 customerRouter.patch('/:id', customerController.updateCustomer);
 
 /**
@@ -291,6 +305,50 @@ customerRouter.delete('/:id/cart/items/:itemId', customerController.deleteCartIt
  *         description: Added to favorites
  */
 customerRouter.get('/:id/favorites', customerController.getFavorites);
+/**
+ * @swagger
+ * /api/customers/{id}/favorites:
+ *   post:
+ *     summary: Add a product to customer's favorites
+ *     description: Adds a product to the customer's list of favorite items.
+ *     tags: [Favorites]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Unique identifier of the customer
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - productId
+ *             properties:
+ *               productId:
+ *                 type: string
+ *                 description: Unique identifier of the product to be added to favorites
+ *     responses:
+ *       201:
+ *         description: Product successfully added to favorites
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Product added to favorites
+ *       400:
+ *         description: Bad request, missing or invalid parameters
+ *       404:
+ *         description: Customer or product not found
+ *       500:
+ *         description: Internal server error
+ */
 customerRouter.post('/:id/favorites', customerController.addFavorite);
 /**
  * @swagger
