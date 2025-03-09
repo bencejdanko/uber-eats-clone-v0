@@ -12,6 +12,22 @@ restaurantRouter.get('/', restaurantController.getRestaurants);
 
 // Restaurant-specific endpoints (require the restaurant to be logged in)
 restaurantRouter.get('/:id', restaurantController.getRestaurant);
+/**
+ * @swagger
+ * /api/restaurants/{id}:
+ *   patch:
+ *     summary: Update a restaurant's details
+ *     tags: [Restaurants]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully updated
+ */
 restaurantRouter.patch('/:id', restaurantController.updateRestaurant);
 restaurantRouter.post('/:id/timings', restaurantController.addRestaurantTimings);
 restaurantRouter.get('/:id/timings', restaurantController.getRestaurantTimings);
