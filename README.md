@@ -51,5 +51,5 @@ cd client
 npm i
 
 # start the app 
-node app.js
+npm run dev
 ```
