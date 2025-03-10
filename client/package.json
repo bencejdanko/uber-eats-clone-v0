@@ -44,6 +44,7 @@
     "cmdk": "1.0.0",
     "croppie": "^2.6.5",
     "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
     "embla-carousel-react": "^8.5.2",
     "framer-motion": "^12.4.10",
     "input-otp": "^1.4.2",

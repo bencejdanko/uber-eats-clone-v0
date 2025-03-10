@@ -1,3 +1,4 @@
+import { Restaurant as RestaurantScreen } from "./Restaurant";
 import { Home as HomeScreen } from "./Home";
 import { Layout } from "./Layout";
 
@@ -11,10 +12,7 @@ function withLayout(Component: React.ComponentType) {
     };
 }
 
+const Restaurant = withLayout(RestaurantScreen);
 const Home = withLayout(HomeScreen);
 
-import * as Customer from "./Customer";
-import * as Restaurant from "./Restaurant";
-import * as Explore from "./Explore";
-
-export { Home, Explore, Customer, Restaurant };
+export { Restaurant, Home };

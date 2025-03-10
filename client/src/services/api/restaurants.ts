@@ -81,6 +81,10 @@ const extendedApi = base.injectEndpoints({
             }),
             invalidatesTags: ["RestarauntImage"],
         }),
+        getRestaurant: builder.query<Restaurant, string>({
+            query: (restaurant_id) => `restaurants/${restaurant_id}`,
+            providesTags: ["Restaurant"],
+        }),
     }),
 });
 
@@ -97,4 +101,5 @@ export const {
     usePutDishMutation,
     useGetRestaurantImagesQuery,
     useDeleteRestaurantImageMutation,
+    useGetRestaurantQuery,
 } = extendedApi;

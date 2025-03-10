@@ -24,10 +24,10 @@ function NavigationDrawer(
                 {!customer.name
                     ? (
                         <>
-                            <a className="w-full" href="customers/signup">
+                            <a className="w-full" href="/customers/signup">
                                 <Button className="w-full h-18">Sign up</Button>
                             </a>
-                            <a className="w-full" href="customers/login">
+                            <a className="w-full" href="/customers/login">
                                 <Button
                                     variant="outline"
                                     className="w-full h-18"
@@ -46,7 +46,7 @@ function NavigationDrawer(
                         </>
                     )}
 
-                <a href="restaurants/login">Add your restaurant</a>
+                <a href="/restaurants/login">Add your restaurant</a>
                 <DrawerFooter>
                     <img src={Icon} alt="Icon" className="h-56" />
                 </DrawerFooter>

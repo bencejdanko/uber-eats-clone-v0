@@ -65,7 +65,7 @@ exports.logoutRestaurant = async (req, res) => {
   try {
     if (!req.session.customerId) {
       console.log("Destroying session")
-      session.destroy();
+      req.session.destroy();
     } else {
       console.log("Getting out of session")
       req.session.restaurantId = undefined;
@@ -86,9 +86,6 @@ const isAuthorized = (req) => {
 // Get restaurant details
 exports.getRestaurant = async (req, res) => {
   try {
-    if (!isAuthorized(req)) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
     const restaurant = await Restaurant.findByPk(req.params.id);
     if (!restaurant) {
       return res.status(404).json({ message: 'Restaurant not found' });
@@ -179,9 +176,6 @@ exports.getRestaurantTimings = async (req, res) => {
 // Get RestaurantImages
 exports.getRestaurantImages = async (req, res) => {
   try {
-    if (!isAuthorized(req)) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
     const RestaurantImages = await RestaurantImage.findAll({ where: { restaurant_id: req.params.id } });
     res.status(200).json(RestaurantImages);
   } catch (error) {
@@ -196,7 +190,7 @@ exports.deleteRestaurantImage = async (req, res) => {
     if (!isAuthorized(req)) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-    
+
     const image = await RestaurantImage.findOne({
       where: { id: req.params.imageId }
     });
