@@ -3,7 +3,7 @@ import { useGetOrdersByCustomerIdQuery, useGetOrderItemsByOrderIdQuery } from "@
 import { useEffect } from "react";
 
 function Order({ orderId, customerId }: { orderId: string, customerId: string }) {
-    const { data: orderItems, error } = useGetOrderItemsByOrderIdQuery({ order_id: orderId, customer_id: customerId });
+    const { data: orderItems, isSuccess, error } = useGetOrderItemsByOrderIdQuery({ order_id: orderId, customer_id: customerId });
 
     useEffect(() => {
         if (orderItems) {
@@ -23,8 +23,8 @@ function Order({ orderId, customerId }: { orderId: string, customerId: string })
                             <div><strong>Dish ID:</strong> {item.dish_id}</div>
                             <div><strong>Quantity:</strong> {item.quantity}</div>
                             <div><strong>Price:</strong> ${item.price}</div>
-                            <div><strong>Status:</strong> {item.order_status}</div>
                             <div><strong>Ordered At:</strong> {new Date(item.createdAt).toLocaleString()}</div>
+                            <div className='text-xl my-4 bg-yellow-400 p-2'><strong>Status:</strong> {item.order_status}</div>
                         </div>
                     ))}
                 </div>

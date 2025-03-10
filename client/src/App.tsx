@@ -101,7 +101,7 @@ function App() {
         <Route path="/customers/orders" element={<screens.Customer.Orders />} />
 
         <Route
-          path="/customers/favourites"
+          path="/customers/favorites"
           element={<screens.Customer.Favorites />}
         />
 
@@ -127,6 +127,11 @@ function App() {
         <Route
           path="/restaurants/signup"
           element={<screens.Restaurant.Auth.SignUp />}
+        />
+
+        <Route
+          path="restaurants/orders"
+          element={<screens.Restaurant.Orders />}
         />
       </Routes>
     </Router>

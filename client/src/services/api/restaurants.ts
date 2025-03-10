@@ -101,8 +101,15 @@ const extendedApi = base.injectEndpoints({
             OrderItem[],
             { restaurant_id: string }
         >({
-            query: (body) => `restaurants/${body.restaurant_id}/orders/items`,
+            query: (body) => `restaurants/${body.restaurant_id}/orders/items/special`,
             providesTags: ["Customer"],
+        }),
+        updateOrderItem: builder.mutation<OrderItem, { id: string; orderItemId: string; order_status: string }>({
+            query: ({ id, orderItemId, order_status }) => ({
+                url: `restaurants/${id}/orders/items/${orderItemId}`,
+                method: "PATCH",
+                body: { order_status },
+            }),
         }),
     }),
 });
@@ -123,5 +130,6 @@ export const {
     useDeleteRestaurantImageMutation,
     useGetRestaurantQuery,
     useGetOrderItemsByRestaurantIdQuery,
-    
+    useUpdateOrderItemMutation
+
 } = extendedApi;

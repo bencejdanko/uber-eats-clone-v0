@@ -1,7 +1,6 @@
 const express = require('express');
 const restaurantRouter = express.Router();
 const { restaurantController } = require('../controllers');
-const { getOrderItemsByRestaurantId } = require('../controllers/restaurants.controller');
 
 /**
  * @swagger
@@ -524,7 +523,7 @@ restaurantRouter.get('/:id/orders/:orderId', restaurantController.getOrder);
  *       401:
  *         description: Unauthorized
  */
-restaurantRouter.patch('/:id/orders/:orderId', restaurantController.updateOrder);
+//restaurantRouter.patch('/:id/orders/:orderId', restaurantController.updateOrder);
 /**
  * @swagger
  * /api/restaurants/{id}/menu:
@@ -537,7 +536,8 @@ restaurantRouter.patch('/:id/orders/:orderId', restaurantController.updateOrder)
  */
 restaurantRouter.delete('/:id/menu', restaurantController.deleteMenu);
 
-restaurantRouter.get('/:id/orders/items', restaurantController.getOrderItemsByRestaurantId);
+restaurantRouter.get('/:id/orders/items/special', restaurantController.getOrderItemsByRestaurantId);
 
+restaurantRouter.patch('/:id/orders/items/:orderItemId', restaurantController.updateOrderItem);
 
 module.exports = restaurantRouter;

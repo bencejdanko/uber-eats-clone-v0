@@ -5,8 +5,10 @@ import {
     useGetRestaurantQuery,
     useGetTimingsQuery,
 } from "@/services/api";
-import { RestaurantTiming } from "@/types";
-import dayjs from "dayjs";
+
+import * as DishComponents from "@/components/Dishes";
+import * as RestaurantCardComponents from "@/components/Restaurants/CardViews";
+
 import { Loader2 } from "lucide-react";
 import {
     Carousel,
@@ -15,22 +17,6 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-
-import {
-    AddToCartWrapper,
-    FavoriteDishWrapper,
-    FavoriteRestaurantWrapper,
-} from "@/components/Customers";
-
-import { Badge } from "@/components/ui/badge";
 
 function Restaurant() {
     const { id } = useParams<{ id: string }>();
@@ -82,21 +68,7 @@ function Restaurant() {
         <div className="mt-4 min-h-screen max-w-md mx-auto flex flex-col gap-10 py-30 px-4">
             {/* Restaurant Header */}
 
-            <div className="space-y-4">
-                <div className="text-sm space-y-2">
-                    <div className="flex justify-between">
-                        <Badge>LOCATION</Badge> {restaurant.location}
-                    </div>
-                    <div className="flex justify-between">
-                        <Badge>CONTACT</Badge> {restaurant.contact_info}
-                    </div>
-                    <FavoriteRestaurantWrapper restaurant_id={restaurant.id} />
-                </div>
-                <div className="text-center">
-                    <h1 className="text-4xl font-bold">{restaurant.name}</h1>
-                    <p className="text-lg mt-2">{restaurant.description}</p>
-                </div>
-            </div>
+            <RestaurantCardComponents.Header restaurant={restaurant} />
 
             {/* Restaurant Images Carousel */}
             <div className="mt-6">
@@ -192,57 +164,10 @@ function Restaurant() {
                     : (
                         <div className="grid grid-cols-1 gap-4">
                             {dishes.map((dish) => (
-                                <Card
-                                    key={dish.name}
-                                    className="relative flex flex-col"
-                                >
-                                    <CardHeader>
-                                        <div className="absolute right-10">
-                                            <Badge>
-                                                {dish.category}
-                                            </Badge>
-                                        </div>
-                                        <CardTitle className="text-lg">
-                                            {dish.name}
-                                        </CardTitle>
-                                        <CardDescription>
-                                            {dish.description}
-                                        </CardDescription>
-                                    </CardHeader>
-                                    {dish.image && (
-                                        <CardContent>
-                                            <img
-                                                src={dish.image}
-                                                alt={dish.name}
-                                                className="object-cover w-full h-40 rounded-md"
-                                            />
-                                        </CardContent>
-                                    )}
-                                    <CardContent className="flex-1">
-                                        <CardDescription className="text-sm">
-                                            <span className="font-semibold">
-                                                Ingredients: {" "}
-                                            </span>
-                                            {dish.ingredients}
-                                        </CardDescription>
-                                        <div className="mt-2 font-semibold">
-                                            ${dish.price}
-                                        </div>
-                                    </CardContent>
-                                    <CardFooter className="flex-col gap-5">
-                                        <AddToCartWrapper
-                                            dish_id={dish.id}
-                                        >
-                                            <div className="font-semibold w-full py-2 rounded-md text-sm text-black bg-yellow-300">
-                                                Add to cart
-                                            </div>
-                                        </AddToCartWrapper>
-
-                                        <FavoriteDishWrapper
-                                            dish_id={dish.id}
-                                        />
-                                    </CardFooter>
-                                </Card>
+                                <DishComponents.CardViews.Base
+                                    key={dish.id}
+                                    dish={dish}
+                                />
                             ))}
                         </div>
                     )}

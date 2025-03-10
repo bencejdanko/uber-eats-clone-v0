@@ -25,9 +25,41 @@ exports.createRestaurant = async (req, res) => {
   }
 };
 
+exports.updateOrderItem = async (req, res) => {
+  try {
+    if (!isAuthorized(req)) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const orderItem = await OrderItem.findOne({
+      where: { id: req.params.orderItemId }
+    });
+    if (!orderItem) {
+      return res.status(404).json({ message: 'OrderItem not found' });
+    }
+
+    if (orderItem.restaurant_id !== req.session.restaurantId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const { order_status } = req.body;
+    if (!order_status) {
+      return res.status(400).json({ message: 'Order status is required' });
+    }
+
+    await orderItem.update({ order_status });
+    res.status(200).json(orderItem);
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 exports.getOrderItemsByRestaurantId = async (req, res) => {
   try {
-    const orderItems = await OrderItem.findAll({ where: { restaurant_id: req.params.restaurantId } });
+    console.log("hitting endpoint?")
+    const orderItems = await OrderItem.findAll({ where: { restaurant_id: req.params.id } });
     res.status(200).json(orderItems);
   } catch (error) {
     console.error(error);
@@ -277,7 +309,7 @@ exports.updateDish = async (req, res) => {
       return res.status(401).json({ message: 'Unauthorized' });
     }
     const dish = await Dish.findOne({
-      where: { id: req.params.dishId, restaurantId: req.params.id }
+      where: { id: req.params.dishId, restaurant_id: req.params.id }
     });
     if (!dish) {
       return res.status(404).json({ message: 'Dish not found' });
@@ -298,7 +330,7 @@ exports.deleteDish = async (req, res) => {
       return res.status(401).json({ message: 'Unauthorized' });
     }
     const dish = await Dish.findOne({
-      where: { id: req.params.dishId, restaurantId: req.params.id }
+      where: { id: req.params.dishId, restaurant_id: req.params.id }
     });
     if (!dish) {
       return res.status(404).json({ message: 'Dish not found' });
@@ -317,7 +349,7 @@ exports.getOrders = async (req, res) => {
     if (!isAuthorized(req)) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-    const orders = await Order.findAll({ where: { restaurantId: req.params.id } });
+    const orders = await Order.findAll({ where: { id: req.params.id } });
     res.status(200).json(orders);
   } catch (error) {
     console.error(error);
@@ -332,7 +364,7 @@ exports.getOrder = async (req, res) => {
       return res.status(401).json({ message: 'Unauthorized' });
     }
     const order = await Order.findOne({
-      where: { id: req.params.orderId, restaurantId: req.params.id }
+      where: { id: req.params.orderId  }
     });
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
@@ -351,7 +383,7 @@ exports.updateOrder = async (req, res) => {
       return res.status(401).json({ message: 'Unauthorized' });
     }
     const order = await Order.findOne({
-      where: { id: req.params.orderId, restaurantId: req.params.id }
+      where: { id: req.params.orderId, restaurant_id: req.params.id }
     });
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
@@ -374,7 +406,7 @@ exports.deleteMenu = async (req, res) => {
     if (!isAuthorized(req)) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-    await Dish.destroy({ where: { restaurantId: req.params.id } });
+    await Dish.destroy({ where: { restaurant_id: req.params.id } });
     res.status(200).json({ message: 'Menu deleted successfully' });
   } catch (error) {
     console.error(error);

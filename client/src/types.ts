@@ -69,6 +69,7 @@ export interface Order {
 export interface OrderItem {
     order_id: string;
     restaurant_id: string;
+    customer_id: string;
     dish_id: string;
     quantity: number;
     price: number;

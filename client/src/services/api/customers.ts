@@ -135,6 +135,10 @@ const extendedApi = base.injectEndpoints({
             query: (body) => `customers/${body.customer_id}/orders/${body.order_id}/items`,
             providesTags: ["Customer"],
         }),
+        getCustomerById: builder.query<Customer, { customer_id: string }>({
+            query: (body) => `customers/${body.customer_id}`,
+            providesTags: ["Customer"],
+        }),
         
     }),
 });
@@ -146,6 +150,8 @@ export const {
     useLoginCustomerMutation,
     useLogoutCustomerMutation,
     useCheckCustomerSessionQuery,
+
+    useGetCustomerByIdQuery,
     
     useGetCustomerCartQuery,
     useAddToCartMutation,

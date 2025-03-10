@@ -83,10 +83,8 @@ exports.logoutCustomer = async (req, res) => {
 // Get customer by ID (requires session auth)
 exports.getCustomerById = async (req, res) => {
   try {
-    if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
-      return res.status(401).json({ message: 'Unauthorized. Please login.' });
-    }
     const customer = await Customer.findByPk(req.params.id);
+    customer.password = undefined;
     if (!customer) return res.status(404).json({ message: 'Customer not found' });
     res.json(customer);
   } catch (error) {
@@ -183,6 +181,7 @@ exports.createOrder = async (req, res) => {
       await OrderItem.create({
         order_id: order.id,
         restaurant_id: restaurant_id,
+        customer_id: req.params.id,
         dish_id: item.dish_id,
         quantity: item.quantity,
         price: item.price,

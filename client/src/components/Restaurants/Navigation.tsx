@@ -112,7 +112,7 @@ function Navigation(
                         </li>
                         
                         <li>
-                            <Link to="/customers">
+                            <Link to="/restaurants/orders">
                                 <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
                                     <div className="text-xs">
                                         Customers

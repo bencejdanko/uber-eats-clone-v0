@@ -25,6 +25,10 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false,
             },
+            customer_id: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
             price: {
                 type: Sequelize.DECIMAL(10, 2),
                 allowNull: false,
