@@ -22,6 +22,6 @@ const initQuery = async (args: any, api: any, extraOptions: any) => {
 
 export const base = createApi({
     baseQuery: initQuery,
-    tagTypes: ["Customer", "Restaurant", "RestaurantTiming", "Dishes"],
+    tagTypes: ["Customer", "Restaurant", "RestaurantTiming", "Dish"],
     endpoints: () => ({}),
 });

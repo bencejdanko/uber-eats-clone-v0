@@ -331,7 +331,7 @@ restaurantRouter.delete('/:id/images/:imageId', restaurantController.deleteResta
  *       401:
  *         description: Unauthorized
  */
-restaurantRouter.post('/:id/dishes', restaurantController.addDish);
+restaurantRouter.put('/:id/dishes', restaurantController.putDish);
 /**
  * @swagger
  * /api/restaurants/{id}/dishes:

@@ -69,7 +69,31 @@ function Navigation(
                                         {restaurant.name}
                                     </div>
                                     <div className="font-bold">
-                                        Account
+                                        Profile
+                                    </div>
+                                </div>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/restaurants/times">
+                                <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
+                                    <div className="text-xs">
+                                        {restaurant.name}
+                                    </div>
+                                    <div className="font-bold">
+                                        Timings
+                                    </div>
+                                </div>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/restaurants/dishes">
+                                <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
+                                    <div className="text-xs">
+                                        {restaurant.name}
+                                    </div>
+                                    <div className="font-bold">
+                                        Dishes
                                     </div>
                                 </div>
                             </Link>

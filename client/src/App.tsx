@@ -49,6 +49,9 @@ function App() {
         <Route path="/customers/signup" element={<screens.Customer.Auth.SignUp />} />
 
         <Route path="/restaurants" element={<screens.Restaurant.Home />} />
+        <Route path="/restaurants/times" element={<screens.Restaurant.Times />} />
+        <Route path="/restaurants/dishes" element={<screens.Restaurant.Dishes />} />
+
         <Route path="/restaurants/login" element={<screens.Restaurant.Auth.Login />} />
         <Route path="/restaurants/signup" element={<screens.Restaurant.Auth.SignUp />} />
 

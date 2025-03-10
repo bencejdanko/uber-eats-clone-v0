@@ -5,17 +5,14 @@ const {
 
 module.exports = (sequelize, DataTypes) => {
   const Dish = sequelize.define('Dish', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
     restaurant_id: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       allowNull: false,
     },
     name: {
       type: DataTypes.STRING,
+      primaryKey: true,
       allowNull: false,
     },
     ingredients: {

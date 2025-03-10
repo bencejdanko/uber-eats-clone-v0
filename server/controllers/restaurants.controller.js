@@ -233,20 +233,13 @@ exports.deleteRestaurantImage = async (req, res) => {
 };
 
 // Add a new dish
-exports.addDish = async (req, res) => {
+exports.putDish = async (req, res) => {
   try {
     if (!isAuthorized(req)) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-    const { name, description, price } = req.body;
-    if (!name || !price) {
-      return res.status(400).json({ message: 'Missing required dish information' });
-    }
-    const dish = await Dish.create({
-      restaurantId: req.params.id,
-      name,
-      description,
-      price,
+    const dish = await Dish.upsert({
+      ...req.body,
     });
     res.status(201).json(dish);
   } catch (error) {
@@ -258,10 +251,7 @@ exports.addDish = async (req, res) => {
 // Get all dishes
 exports.getDishes = async (req, res) => {
   try {
-    if (!isAuthorized(req)) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-    const dishes = await Dish.findAll({ where: { restaurantId: req.params.id } });
+    const dishes = await Dish.findAll({ where: { restaurant_id: req.params.id } });
     res.status(200).json(dishes);
   } catch (error) {
     console.error(error);
@@ -272,11 +262,8 @@ exports.getDishes = async (req, res) => {
 // Get a single dish
 exports.getDish = async (req, res) => {
   try {
-    if (!isAuthorized(req)) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
     const dish = await Dish.findOne({
-      where: { id: req.params.dishId, restaurantId: req.params.id }
+      where: { id: req.params.dishId, restaurant_id: req.params.id }
     });
     if (!dish) {
       return res.status(404).json({ message: 'Dish not found' });

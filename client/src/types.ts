@@ -25,7 +25,7 @@ export interface RestaurantTiming {
 }
 
 export interface Dish {
-    id: string;
+    restaurant_id: string;
     name: string;
     ingredients: string;
     description?: string;

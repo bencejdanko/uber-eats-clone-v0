@@ -1,5 +1,5 @@
 import { base } from "./base";
-import type { Restaurant, RestaurantTiming, Dish } from "@/types";
+import type { Dish, Restaurant, RestaurantTiming } from "@/types";
 
 const extendedApi = base.injectEndpoints({
     endpoints: (builder) => ({
@@ -54,25 +54,21 @@ const extendedApi = base.injectEndpoints({
             query: (restaurant_id) => `restaurants/${restaurant_id}/timings`,
             providesTags: ["RestaurantTiming"],
         }),
-        getDishes: builder.query<Dishes[], string>({
+        getDishes: builder.query<Dish[], string>({
             query: (restaurant_id) => `restaurants/${restaurant_id}/dishes`,
-            providesTags: ["Dishes"],
+            providesTags: ["Dish"],
         }),
-        addDish: builder.mutation<Dishes, Partial<Dishes>>({
-            query: (body) => ({
-                url: `restaurants/${body.restaurant_id}/dishes`,
-                method: "POST",
-                body,
-            }),
-            invalidatesTags: ["Dishes"],
-        }),
-        updateDish: builder.mutation<Dishes, Partial<Dishes>>({
-            query: (body) => ({
-                url: `restaurants/${body.restaurant_id}/dishes/${body.id}`,
-                method: "PATCH",
-                body,
-            }),
-            invalidatesTags: ["Dishes"],
+        putDish: builder.mutation<Dish, Partial<Dish>>({
+            query: (body) => {
+                console.log(JSON.stringify(body));
+                console.log(`restaurants/${body.restaurant_id}/dishes`)
+                return {
+                    url: `restaurants/${body.restaurant_id}/dishes`,
+                    method: "PUT",
+                    body,
+                };
+            },
+            invalidatesTags: ["Dish"],
         }),
     }),
 });
@@ -86,4 +82,6 @@ export const {
     useUpdateRestaurantMutation,
     useUpdateTimingMutation,
     useGetTimingsQuery,
+    useGetDishesQuery,
+    usePutDishMutation,
 } = extendedApi;
