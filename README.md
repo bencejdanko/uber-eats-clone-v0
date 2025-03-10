@@ -18,7 +18,7 @@ AWS_ACCESS_KEY_ID={}
 AWS_SECRET_ACCESS_KEY={}
 ```
 
-## Conduct the migrations
+## Conduct the migrations in `server`
 
 ```
 npx sequelize-cli db:migrate

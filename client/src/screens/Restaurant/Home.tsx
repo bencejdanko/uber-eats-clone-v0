@@ -116,7 +116,7 @@ function Home() {
                             Change Restaurant Times
                         </div>
                         <TimesForm restaurant={restaurant} onSubmit={onTimesSubmit} />
-                        <div className='flex justify-center text-center'>
+                        <div className='flex justify-center text-center mt-4'>
                         {(timesLoading || timesSuccess) && (
                             <LoadingSpinnerToCheck
                                 isSuccess={isTimingSuccess}

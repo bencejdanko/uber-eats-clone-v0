@@ -1,5 +1,5 @@
 import { base } from "./base";
-import type { Restaurant, RestaurantTiming } from "@/types";
+import type { Restaurant, RestaurantTiming, Dish } from "@/types";
 
 const extendedApi = base.injectEndpoints({
     endpoints: (builder) => ({
@@ -54,7 +54,26 @@ const extendedApi = base.injectEndpoints({
             query: (restaurant_id) => `restaurants/${restaurant_id}/timings`,
             providesTags: ["RestaurantTiming"],
         }),
-
+        getDishes: builder.query<Dishes[], string>({
+            query: (restaurant_id) => `restaurants/${restaurant_id}/dishes`,
+            providesTags: ["Dishes"],
+        }),
+        addDish: builder.mutation<Dishes, Partial<Dishes>>({
+            query: (body) => ({
+                url: `restaurants/${body.restaurant_id}/dishes`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Dishes"],
+        }),
+        updateDish: builder.mutation<Dishes, Partial<Dishes>>({
+            query: (body) => ({
+                url: `restaurants/${body.restaurant_id}/dishes/${body.id}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["Dishes"],
+        }),
     }),
 });
 

@@ -23,3 +23,13 @@ export interface RestaurantTiming {
     close_time?: string;
     closed?: boolean;
 }
+
+export interface Dish {
+    id: string;
+    name: string;
+    ingredients: string;
+    description?: string;
+    price: number;
+    category: string;
+    image?: string;
+}
