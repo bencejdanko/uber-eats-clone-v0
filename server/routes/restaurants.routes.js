@@ -227,34 +227,6 @@ restaurantRouter.get('/:id/timings', restaurantController.getRestaurantTimings);
 /**
  * @swagger
  * /api/restaurants/{id}/images:
- *   post:
- *     summary: Upload restaurant images
- *     tags: [Restaurants]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - RestaurantImageUrl
- *             properties:
- *               RestaurantImageUrl:
- *                 type: string
- *     responses:
- *       201:
- *         description: Image uploaded successfully
- */
-restaurantRouter.post('/:id/images', restaurantController.uploadRestaurantImage);
-/**
- * @swagger
- * /api/restaurants/{id}/images:
  *   get:
  *     summary: Get restaurant images
  *     tags: [Restaurants]

@@ -176,34 +176,13 @@ exports.getRestaurantTimings = async (req, res) => {
   }
 };
 
-// Upload an RestaurantImage
-exports.uploadRestaurantImage = async (req, res) => {
-  try {
-    if (!isAuthorized(req)) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-    const { RestaurantImageUrl } = req.body;
-    if (!RestaurantImageUrl) {
-      return res.status(400).json({ message: 'RestaurantImage URL is required' });
-    }
-    const RestaurantImage = await RestaurantImage.create({
-      restaurantId: req.params.id,
-      RestaurantImageUrl,
-    });
-    res.status(201).json(RestaurantImage);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
 // Get RestaurantImages
 exports.getRestaurantImages = async (req, res) => {
   try {
     if (!isAuthorized(req)) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-    const RestaurantImages = await RestaurantImage.findAll({ where: { restaurantId: req.params.id } });
+    const RestaurantImages = await RestaurantImage.findAll({ where: { restaurant_id: req.params.id } });
     res.status(200).json(RestaurantImages);
   } catch (error) {
     console.error(error);
@@ -217,14 +196,14 @@ exports.deleteRestaurantImage = async (req, res) => {
     if (!isAuthorized(req)) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-    const { RestaurantImageId } = req.params;
-    const RestaurantImage = await RestaurantImage.findOne({
-      where: { id: RestaurantImageId, restaurantId: req.params.id }
+    
+    const image = await RestaurantImage.findOne({
+      where: { id: req.params.imageId }
     });
-    if (!RestaurantImage) {
+    if (!image) {
       return res.status(404).json({ message: 'RestaurantImage not found' });
     }
-    await RestaurantImage.destroy();
+    await image.destroy();
     res.status(200).json({ message: 'RestaurantImage deleted successfully' });
   } catch (error) {
     console.error(error);

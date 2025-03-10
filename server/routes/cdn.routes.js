@@ -46,4 +46,6 @@ const upload = multer();
  */
 cdnRouter.post('/uploadAvatar', upload.single("file"), cdnController.uploadAvatar);
 
+cdnRouter.post('/uploadRestaurantImage', upload.single("file"), cdnController.uploadRestaurantImage);
+
 module.exports = cdnRouter;

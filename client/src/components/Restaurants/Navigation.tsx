@@ -99,6 +99,18 @@ function Navigation(
                             </Link>
                         </li>
                         <li>
+                            <Link to="/restaurants/gallery">
+                                <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
+                                    <div className="text-xs">
+                                        {restaurant.name}
+                                    </div>
+                                    <div className="font-bold">
+                                        Gallery
+                                    </div>
+                                </div>
+                            </Link>
+                        </li>
+                        <li>
                             <Link to="/customers">
                                 <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
                                     <div className="text-xs">

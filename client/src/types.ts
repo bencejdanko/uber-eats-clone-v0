@@ -33,3 +33,9 @@ export interface Dish {
     category: string;
     image?: string;
 }
+
+export interface RestarauntImage {
+    id: string;
+    restaurant_id: string;
+    image_url: string;
+}

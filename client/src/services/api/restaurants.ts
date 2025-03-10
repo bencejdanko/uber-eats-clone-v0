@@ -1,5 +1,5 @@
 import { base } from "./base";
-import type { Dish, Restaurant, RestaurantTiming } from "@/types";
+import type { Dish, Restaurant, RestaurantTiming, RestarauntImage } from "@/types";
 
 const extendedApi = base.injectEndpoints({
     endpoints: (builder) => ({
@@ -70,6 +70,17 @@ const extendedApi = base.injectEndpoints({
             },
             invalidatesTags: ["Dish"],
         }),
+        getRestaurantImages: builder.query<RestarauntImage[], string>({
+            query: (restaurant_id) => `restaurants/${restaurant_id}/images`,
+            providesTags: ["RestarauntImage"],
+        }),
+        deleteRestaurantImage: builder.mutation<void, { restaurant_id: string, image_id: string }>({
+            query: ({ restaurant_id, image_id }) => ({
+                url: `restaurants/${restaurant_id}/images/${image_id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["RestarauntImage"],
+        }),
     }),
 });
 
@@ -84,4 +95,6 @@ export const {
     useGetTimingsQuery,
     useGetDishesQuery,
     usePutDishMutation,
+    useGetRestaurantImagesQuery,
+    useDeleteRestaurantImageMutation,
 } = extendedApi;

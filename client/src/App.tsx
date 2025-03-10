@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, data } from "react-router-dom";
 
-import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { useCheckCustomerSessionQuery, useGetTimingsQuery } from "./services/api";
+import { useAppDispatch } from "./app/hooks";
+import { useCheckCustomerSessionQuery } from "./services/api";
 
 import * as screens from "./screens";
 
@@ -51,6 +51,8 @@ function App() {
         <Route path="/restaurants" element={<screens.Restaurant.Home />} />
         <Route path="/restaurants/times" element={<screens.Restaurant.Times />} />
         <Route path="/restaurants/dishes" element={<screens.Restaurant.Dishes />} />
+        <Route path="/restaurants/gallery" element={<screens.Restaurant.Gallery />} />
+        {/* <Route path="/restaurants/orders" element={<screens.Restaurant.Orders />} /> */}
 
         <Route path="/restaurants/login" element={<screens.Restaurant.Auth.Login />} />
         <Route path="/restaurants/signup" element={<screens.Restaurant.Auth.SignUp />} />
