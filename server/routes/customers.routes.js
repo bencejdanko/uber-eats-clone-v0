@@ -366,7 +366,7 @@ customerRouter.delete('/:id/cart/items/:itemId', customerController.deleteCartIt
  *       500:
  *         description: Internal server error
  */
-customerRouter.get('/:id/favorites', customerController.getFavorites);
+customerRouter.get('/:id/favorites/restaurants', customerController.getFavoriteRestaurants);
 /**
  * @swagger
  * /api/customers/{id}/favorites:
@@ -411,7 +411,7 @@ customerRouter.get('/:id/favorites', customerController.getFavorites);
  *       500:
  *         description: Internal server error
  */
-customerRouter.post('/:id/favorites', customerController.addFavorite);
+customerRouter.post('/:id/favorites/restaurants/:restaurantId', customerController.addFavoriteRestaurant);
 /**
  * @swagger
  * /api/customers/{id}/favorites/{favoriteId}:
@@ -439,6 +439,18 @@ customerRouter.post('/:id/favorites', customerController.addFavorite);
  *       404:
  *         description: Favorite not found
  */
-customerRouter.delete('/:id/favorites/:favoriteId', customerController.deleteFavorite);
+customerRouter.delete('/:id/favorites/restaurants/:restaurantId', customerController.deleteFavoriteRestaurant);
+
+customerRouter.get('/:id/favorites/dishes', customerController.getFavoriteDishes);
+customerRouter.post('/:id/favorites/dishes/:dishId', customerController.addFavoriteDish);
+customerRouter.delete('/:id/favorites/dishes/:dishId', customerController.deleteFavoriteDish);
+
+customerRouter.post("/:id/orders", customerController.createOrder);
+customerRouter.get("/:id/orders/:orderId/items", customerController.getOrderItemsByOrderId);
+customerRouter.get("/:id/orders/items", customerController.getOrderItemsByCustomerId);
+
+// customerRouter.get("/:id/orders/:orderId", customerController.getOrderById);
+// customerRouter.patch("/:id/orders/:orderId", customerController.updateOrder);
+// customerRouter.delete("/:id/orders/:orderId", customerController.deleteOrder);
 
 module.exports = customerRouter;

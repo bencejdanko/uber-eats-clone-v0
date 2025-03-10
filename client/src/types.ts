@@ -25,6 +25,7 @@ export interface RestaurantTiming {
 }
 
 export interface Dish {
+    id: string;
     restaurant_id: string;
     name: string;
     ingredients: string;
@@ -38,4 +39,38 @@ export interface RestarauntImage {
     id: string;
     restaurant_id: string;
     image_url: string;
+}
+
+export interface CartItem {
+    id: string;
+    cart_id: string;
+    dish_id: string;
+    quantity: number;
+    price: number;
+}
+
+export interface FavoriteRestaurant {
+    customer_id: string;
+    restaurant_id: string;
+}
+
+export interface FavoriteDish {
+    customer_id: string;
+    dish_id: string;
+}
+
+export interface Order {
+    id: string;
+    customer_id: string;
+    order_date: string;
+    total_amount: number;
+}
+
+export interface OrderItem {
+    order_id: string;
+    restaurant_id: string;
+    dish_id: string;
+    quantity: number;
+    price: number;
+    order_status: string;
 }

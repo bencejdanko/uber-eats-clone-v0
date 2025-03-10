@@ -1,6 +1,7 @@
 const express = require('express');
 const restaurantRouter = express.Router();
 const { restaurantController } = require('../controllers');
+const { getOrderItemsByRestaurantId } = require('../controllers/restaurants.controller');
 
 /**
  * @swagger
@@ -303,7 +304,7 @@ restaurantRouter.delete('/:id/images/:imageId', restaurantController.deleteResta
  *       401:
  *         description: Unauthorized
  */
-restaurantRouter.put('/:id/dishes', restaurantController.putDish);
+restaurantRouter.put('/:id/dishes', restaurantController.putDishes);
 /**
  * @swagger
  * /api/restaurants/{id}/dishes:
@@ -368,7 +369,7 @@ restaurantRouter.get('/:id/dishes', restaurantController.getDishes);
  *       500:
  *          description: Internal server error
  */
-restaurantRouter.get('/:id/dishes/:dishId', restaurantController.getDish);
+restaurantRouter.get('/dishes/:dishId', restaurantController.getDish);
 /**
  * @swagger
  * /api/restaurants/{id}/dishes/{dishId}:
@@ -535,5 +536,8 @@ restaurantRouter.patch('/:id/orders/:orderId', restaurantController.updateOrder)
  *         description: Specific restaurant's menu deleted successfully
  */
 restaurantRouter.delete('/:id/menu', restaurantController.deleteMenu);
+
+restaurantRouter.get('/:id/orders/items', restaurantController.getOrderItemsByRestaurantId);
+
 
 module.exports = restaurantRouter;

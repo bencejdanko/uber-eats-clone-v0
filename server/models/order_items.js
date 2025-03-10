@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    restaurant_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     dish_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -24,7 +28,21 @@ module.exports = (sequelize, DataTypes) => {
     price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
-    }
+    },
+    order_status: {
+      type: DataTypes.ENUM(
+        'New',
+        'Order Received',
+        'Preparing',
+        'On the Way',
+        'Pick-up Ready',
+        'Delivered',
+        'Picked Up',
+        'Cancelled'
+      ),
+      allowNull: false,
+      defaultValue: 'New',
+    },
   }, {});
   return OrderItem;
 };

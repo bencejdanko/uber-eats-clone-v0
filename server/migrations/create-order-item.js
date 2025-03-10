@@ -2,39 +2,46 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Dishes', {
+        await queryInterface.createTable('OrderItems', {
             id: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            restaurant_id: {
+            order_id: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
             },
-            name: {
-                type: Sequelize.STRING,
+            dish_id: {
+                type: Sequelize.INTEGER,
                 allowNull: false,
             },
-            ingredients: {
-                type: Sequelize.TEXT,
+            quantity: {
+                type: Sequelize.INTEGER,
                 allowNull: false,
+                defaultValue: 1,
             },
-            image: {
-                type: Sequelize.STRING,
-                allowNull: true,
+            restaurant_id: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
             },
             price: {
                 type: Sequelize.DECIMAL(10, 2),
                 allowNull: false,
             },
-            description: {
-                type: Sequelize.TEXT,
-                allowNull: true,
-            },
-            category: {
-                type: Sequelize.STRING,
+            order_status: {
+                type: Sequelize.ENUM(
+                    'New',
+                    'Order Received',
+                    'Preparing',
+                    'On the Way',
+                    'Pick-up Ready',
+                    'Delivered',
+                    'Picked Up',
+                    'Cancelled'
+                ),
                 allowNull: false,
+                defaultValue: 'New',
             },
             createdAt: {
                 allowNull: false,
@@ -47,6 +54,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('Dishes');
+        await queryInterface.dropTable('OrderItems');
     }
 };

@@ -88,11 +88,11 @@ function Home() {
     );
   }
 
-  if (error) return <div>Error loading data</div>;
+  if (error) return  <div className="min-h-screen pt-30 p-5 w-full text-center">Oops, there was an error loading restaurants</div>;
 
   return (
     <div className="min-h-screen pt-30 p-5 w-full">
-      <div className="text-4xl mb-5">Explore Local Restaurants</div>
+      <div className="text-4xl mb-5 font-bold">Explore Local Restaurants</div>
       <div className="flex flex-wrap flex-grow gap-5 overflow-y-auto">
         {data &&
           data.rows.map((restaurant) => (

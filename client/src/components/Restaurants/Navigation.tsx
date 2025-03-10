@@ -78,10 +78,10 @@ function Navigation(
                             <Link to="/restaurants/times">
                                 <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
                                     <div className="text-xs">
-                                        {restaurant.name}
+                                        Weekdays
                                     </div>
                                     <div className="font-bold">
-                                        Timings
+                                        & Timings
                                     </div>
                                 </div>
                             </Link>
@@ -90,10 +90,10 @@ function Navigation(
                             <Link to="/restaurants/dishes">
                                 <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
                                     <div className="text-xs">
-                                        {restaurant.name}
+                                        Menu
                                     </div>
                                     <div className="font-bold">
-                                        Dishes
+                                        & Dishes
                                     </div>
                                 </div>
                             </Link>
@@ -102,7 +102,7 @@ function Navigation(
                             <Link to="/restaurants/gallery">
                                 <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
                                     <div className="text-xs">
-                                        {restaurant.name}
+                                        Photos
                                     </div>
                                     <div className="font-bold">
                                         Gallery
@@ -110,6 +110,7 @@ function Navigation(
                                 </div>
                             </Link>
                         </li>
+                        
                         <li>
                             <Link to="/customers">
                                 <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
@@ -118,6 +119,15 @@ function Navigation(
                                     </div>
                                     <div className="font-bold">
                                         & Orders
+                                    </div>
+                                </div>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to={`/explore/restaurants/${restaurant.id}`}>
+                                <div className="bg-yellow-400 block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
+                                    <div className="font-bold">
+                                        See Published
                                     </div>
                                 </div>
                             </Link>

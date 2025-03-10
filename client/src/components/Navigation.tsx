@@ -6,11 +6,15 @@ import { NavigationDrawer } from "./NavigationDrawer";
 import Banner from "/banner.svg";
 import { ShoppingCart } from "lucide-react";
 import { Customer, Restaurant } from "@/types";
+import { useAppSelector } from "@/app/hooks";
 
 function Navigation(
     { customer, restaurant }: { customer: Customer; restaurant: Restaurant },
 ) {
     const [isScrolled, setIsScrolled] = useState(false);
+
+    const cart = useAppSelector((state) => state.cart);
+    const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -96,7 +100,19 @@ function Navigation(
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/customers">
+                                    <Link to="/customers/favorites">
+                                        <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
+                                            <div className="text-xs">
+                                                Save
+                                            </div>
+                                            <div className="font-bold">
+                                                Favorites
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/customers/orders">
                                         <div className="block rounded-lg bg-white p-2 border-2 border-transparent hover:border-black">
                                             <div className="text-xs">
                                                 Payments
@@ -108,12 +124,15 @@ function Navigation(
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/restaurants/login">
-                                        <div className="bg-white p-2 rounded-lg flex gap-2 items-center border-2 border-transparent hover:border-black">
+                                    <Link to="/customers/cart">
+                                        <div className="bg-white p-2 rounded-lg flex gap-2 items-center border-2 border-transparent hover:border-black relative">
                                             <ShoppingCart size={36} />
-                                            <span className="font-bold">
+                                            <div className="font-bold">
                                                 Cart
-                                            </span>
+                                            </div>
+                                            <div className="absolute top-0 left-8 border-black border-2 bg-white font-bold text-orange-700 w-6 h-6 rounded-full flex justify-center items-center">
+                                                {cartCount}
+                                            </div>
                                         </div>
                                     </Link>
                                 </li>

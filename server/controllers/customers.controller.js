@@ -1,6 +1,7 @@
 const session = require('express-session');
-const { Customer, Order, Cart, CartItem, Favorite } = require('../models');
+const { Customer, Order, OrderItem, Cart, CartItem, FavoriteRestaurant, FavoriteDish, Dish } = require('../models');
 const bcrypt = require('bcryptjs');
+const order = require('../models/order');
 
 // Create a new customer (signup)
 exports.createCustomer = async (req, res) => {
@@ -19,6 +20,10 @@ exports.createCustomer = async (req, res) => {
     });
     req.session.customerId = customer.id;
     customer.password = undefined;
+
+    // Create a cart for the customer
+    await Cart.create({ customer_id: customer.id });
+
     res.status(201).json(customer);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -138,12 +143,89 @@ exports.getCustomerOrders = async (req, res) => {
     if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
       return res.status(401).json({ message: 'Unauthorized. Please login.' });
     }
-    const orders = await Order.findAll({ where: { customerId: req.params.id } });
+    const orders = await Order.findAll({ where: { customer_id: req.params.id } });
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.createOrder = async (req, res) => {
+  try {
+    if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
+      return res.status(401).json({ message: 'Unauthorized. Please login.' });
+    }
+
+    const cart = await Cart.findOne({ where: { customer_id: req.params.id } });
+    if (!cart) return res.status(404).json({ message: 'Cart not found' });
+
+    const cartItems = await CartItem.findAll({ where: { cart_id: cart.id } });
+    if (cartItems.length === 0) return res.status(400).json({ message: 'Cart is empty' });
+
+    let total = 0;
+    for (const item of cartItems) {
+      total += item.price * item.quantity;
+    }
+
+    const order = await Order.create({
+      customer_id: req.params.id,
+      cart_id: cart.id,
+      order_date: new Date(),
+      total_amount: total,
+    });
+
+    for (const item of cartItems) {
+
+      // fetch the restaurant id from the dish id
+      const dish = await Dish.findByPk(item.dish_id);
+      const restaurant_id = dish.restaurant_id;
+
+      await OrderItem.create({
+        order_id: order.id,
+        restaurant_id: restaurant_id,
+        dish_id: item.dish_id,
+        quantity: item.quantity,
+        price: item.price,
+      });
+    }
+
+    await CartItem.destroy({ where: { cart_id: cart.id } });
+    await cart.destroy();
+
+    res.status(201).json(order);
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: error.message });
+  }
+}
+
+exports.getOrderItemsByOrderId = async (req, res) => {
+  try {
+    if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
+      return res.status(401).json({ message: 'Unauthorized. Please login.' });
+    }
+    
+    const orderItems = await OrderItem.findAll({ where: { order_id: req.params.orderId } });
+    res.json(orderItems);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+exports.getOrderItemsByCustomerId = async (req, res) => {
+  try {
+    if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
+      return res.status(401).json({ message: 'Unauthorized. Please login.' });
+    }
+
+    const orders = await Order.findAll({ where: { customer_id: req.params.id } });
+    const orderIds = orders.map(order => order.id);
+    const orderItems = await OrderItem.findAll({ where: { order_id: orderIds } });
+    res.json(orderItems);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
 // Get customer's cart items
 exports.getCustomerCart = async (req, res) => {
@@ -151,12 +233,13 @@ exports.getCustomerCart = async (req, res) => {
     if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
       return res.status(401).json({ message: 'Unauthorized. Please login.' });
     }
-    const cart = await Cart.findOne({ where: { customerId: req.params.id } });
+    const cart = await Cart.findOne({ where: { customer_id: req.params.id } });
     if (!cart) return res.status(404).json({ message: 'Cart not found' });
 
-    const items = await CartItem.findAll({ where: { cartId: cart.id } });
+    const items = await CartItem.findAll({ where: { cart_id: cart.id } });
     res.json(items);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -167,7 +250,7 @@ exports.clearCustomerCart = async (req, res) => {
     if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
       return res.status(401).json({ message: 'Unauthorized. Please login.' });
     }
-    const cart = await Cart.findOne({ where: { customerId: req.params.id } });
+    const cart = await Cart.findOne({ where: { customer_id: req.params.id } });
     if (!cart) return res.status(404).json({ message: 'Cart not found' });
 
     await CartItem.destroy({ where: { cartId: cart.id } });
@@ -183,25 +266,45 @@ exports.addItemToCart = async (req, res) => {
     if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
       return res.status(401).json({ message: 'Unauthorized. Please login.' });
     }
-    const { productId, quantity } = req.body;
-    if (!productId || !quantity)
-      return res.status(400).json({ message: 'Product ID and quantity are required' });
 
-    let cart = await Cart.findOne({ where: { customerId: req.params.id } });
+    const { dish_id, quantity, price } = req.body;
+    if (!dish_id || !quantity || !price)
+      return res.status(400).json({ message: 'dish_id and quantity are required' });
+
+    // Find or create cart
+    let cart = await Cart.findOne({ where: { customer_id: req.params.id } });
+
     if (!cart) {
-      cart = await Cart.create({ customerId: req.params.id });
+      cart = await Cart.create({ customer_id: req.params.id });
     }
 
-    const cartItem = await CartItem.create({
-      cartId: cart.id,
-      productId,
-      quantity,
+    // Check if the dish already exists in the cart
+    let cartItem = await CartItem.findOne({
+      where: { cart_id: cart.id, dish_id },
     });
+
+    if (cartItem) {
+      // If dish exists, update quantity
+      cartItem.quantity += quantity;
+      await cartItem.save();
+    } else {
+      // Otherwise, create a new cart item
+      cartItem = await CartItem.create({
+        cart_id: cart.id,
+        dish_id,
+        price,
+        quantity,
+      });
+    }
+
     res.status(201).json(cartItem);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
+
+
 
 // Update an item in the cart (PATCH)
 exports.updateCartItem = async (req, res) => {
@@ -209,46 +312,44 @@ exports.updateCartItem = async (req, res) => {
     if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
       return res.status(401).json({ message: 'Unauthorized. Please login.' });
     }
-    const { itemId } = req.params;
     const { quantity } = req.body;
     if (!quantity)
       return res.status(400).json({ message: 'Quantity is required' });
 
-    const cartItem = await CartItem.findOne({ where: { id: itemId } });
+    // Find the cart for the customer
+    const cart = await Cart.findOne({ where: { customer_id: req.params.id } });
+    if (!cart)
+      return res.status(404).json({ message: 'Cart not found' });
+
+    // Find the cart item by dish_id
+    const cartItem = await CartItem.findOne({ where: { cart_id: cart.id, id: req.params.itemId } });
     if (!cartItem)
       return res.status(404).json({ message: 'Cart item not found' });
-
-    // Ensure the cart item belongs to the authenticated customer
-    const cart = await Cart.findOne({
-      where: { id: cartItem.cartId, customerId: req.params.id },
-    });
-    if (!cart)
-      return res.status(403).json({ message: 'This cart item does not belong to you' });
 
     cartItem.quantity = quantity;
     await cartItem.save();
     res.json(cartItem);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
 
-// Delete an item from the cart (DELETE)
+// Delete an item from the cart by dish ID (DELETE)
 exports.deleteCartItem = async (req, res) => {
   try {
     if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
       return res.status(401).json({ message: 'Unauthorized. Please login.' });
     }
-    const { itemId } = req.params;
-    const cartItem = await CartItem.findOne({ where: { id: itemId } });
+    // Find the cart for the customer
+    const cart = await Cart.findOne({ where: { customer_id: req.params.id } });
+    if (!cart)
+      return res.status(404).json({ message: 'Cart not found' });
+
+    // Find the cart item by dish_id
+    const cartItem = await CartItem.findOne({ where: { cart_id: cart.id, id: req.params.itemId } });
     if (!cartItem)
       return res.status(404).json({ message: 'Cart item not found' });
-
-    const cart = await Cart.findOne({
-      where: { id: cartItem.cartId, customerId: req.params.id },
-    });
-    if (!cart)
-      return res.status(403).json({ message: 'This cart item does not belong to you' });
 
     await cartItem.destroy();
     res.json({ message: 'Cart item removed' });
@@ -258,47 +359,105 @@ exports.deleteCartItem = async (req, res) => {
 };
 
 // Add a favorite item (POST)
-exports.addFavorite = async (req, res) => {
+exports.addFavoriteRestaurant = async (req, res) => {
   try {
     if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
       return res.status(401).json({ message: 'Unauthorized. Please login.' });
     }
-    const { productId } = req.body;
-    if (!productId)
-      return res.status(400).json({ message: 'Product ID is required' });
 
-    const favorite = await Favorite.create({
-      customerId: req.params.id,
-      productId,
+    if (!req.params.restaurantId)
+      return res.status(400).json({ message: 'restaurantId param is required' });
+
+
+    // Check if the restaurant is already a favorite
+    const existingFavorite = await FavoriteRestaurant.findOne({
+      where: { customer_id: req.params.id, restaurant_id: req.params.restaurantId },
+    });
+    if (existingFavorite)
+      return res.status(400).json({ message: 'Restaurant is already a favorite' });
+
+
+    const favorite = await FavoriteRestaurant.create({
+      customer_id: req.params.id,
+      restaurant_id: req.params.restaurantId,
     });
     res.status(201).json(favorite);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
 
-// Get customer's favorite items (GET)
-exports.getFavorites = async (req, res) => {
+// Add a favorite item (POST)
+exports.addFavoriteDish = async (req, res) => {
   try {
     if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
       return res.status(401).json({ message: 'Unauthorized. Please login.' });
     }
-    const favorites = await Favorite.findAll({ where: { customerId: req.params.id } });
+
+    if (!req.params.dishId)
+      return res.status(400).json({ message: 'dishId param is required' });
+
+
+    // Check if the dish is already a favorite
+    const existingFavorite = await FavoriteDish.findOne({
+      where: { customer_id: req.params.id, dish_id: req.params.dishId },
+    });
+    if (existingFavorite)
+      return res.status(400).json({ message: 'Dish is already a favorite' });
+
+    const favorite = await FavoriteDish.create({
+      customer_id: req.params.id,
+      dish_id: req.params.dishId,
+    });
+    res.status(201).json(favorite);
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+// Get customer's favorite items (GET)
+exports.getFavoriteRestaurants = async (req, res) => {
+  try {
+    if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
+      return res.status(401).json({ message: 'Unauthorized. Please login.' });
+    }
+    const favorites = await FavoriteRestaurant.findAll({ where: { customer_id: req.params.id } });
     res.json(favorites);
   } catch (error) {
+    console.log(error);
+
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getFavoriteDishes = async (req, res) => {
+  try {
+    if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
+      return res.status(401).json({ message: 'Unauthorized. Please login.' });
+    }
+    const favorites = await FavoriteDish.findAll({ where: { customer_id: req.params.id } });
+    res.json(favorites);
+  } catch (error) {
+    console.log(error);
+
     res.status(500).json({ message: error.message });
   }
 };
 
 // Remove a favorite item (DELETE)
-exports.deleteFavorite = async (req, res) => {
+exports.deleteFavoriteRestaurant = async (req, res) => {
   try {
     if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
       return res.status(401).json({ message: 'Unauthorized. Please login.' });
     }
-    const { favoriteId } = req.params;
-    const favorite = await Favorite.findOne({
-      where: { id: favoriteId, customerId: req.params.id },
+
+
+    const favorite = await FavoriteRestaurant.findOne({
+      where: { customer_id: req.params.id, restaurant_id: req.params.restaurantId },
     });
     if (!favorite)
       return res.status(404).json({ message: 'Favorite not found' });
@@ -306,6 +465,30 @@ exports.deleteFavorite = async (req, res) => {
     await favorite.destroy();
     res.json({ message: 'Favorite removed' });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.deleteFavoriteDish = async (req, res) => {
+  try {
+    if (!req.session.customerId || req.session.customerId.toString() !== req.params.id) {
+      return res.status(401).json({ message: 'Unauthorized. Please login.' });
+    }
+
+
+    const favorite = await FavoriteDish.findOne({
+      where: { customer_id: req.params.id, dish_id: req.params.dishId },
+    });
+    if (!favorite)
+      return res.status(404).json({ message: 'Favorite not found' });
+
+    await favorite.destroy();
+    res.json({ message: 'Favorite removed' });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({ message: error.message });
+  }
+}

@@ -1,5 +1,11 @@
 import { base } from "./base";
-import type { Dish, Restaurant, RestaurantTiming, RestarauntImage } from "@/types";
+import type {
+    Dish,
+    RestarauntImage,
+    Restaurant,
+    RestaurantTiming,
+    OrderItem
+} from "@/types";
 
 const extendedApi = base.injectEndpoints({
     endpoints: (builder) => ({
@@ -58,23 +64,29 @@ const extendedApi = base.injectEndpoints({
             query: (restaurant_id) => `restaurants/${restaurant_id}/dishes`,
             providesTags: ["Dish"],
         }),
-        putDish: builder.mutation<Dish, Partial<Dish>>({
-            query: (body) => {
-                console.log(JSON.stringify(body));
-                console.log(`restaurants/${body.restaurant_id}/dishes`)
-                return {
-                    url: `restaurants/${body.restaurant_id}/dishes`,
-                    method: "PUT",
-                    body,
-                };
-            },
+        putDishes: builder.mutation<
+            Dish[],
+            { restaurant_id: string; dishes: Partial<Dish>[] }
+        >({
+            query: ({ restaurant_id, dishes }) => ({
+                url: `restaurants/${restaurant_id}/dishes`,
+                method: "PUT",
+                body: { dishes },
+            }),
             invalidatesTags: ["Dish"],
+        }),
+        getDish: builder.query<Dish, { dish_id: string }>({
+            query: ({ dish_id }) => `restaurants/dishes/${dish_id}`,
+            providesTags: ["Dish"],
         }),
         getRestaurantImages: builder.query<RestarauntImage[], string>({
             query: (restaurant_id) => `restaurants/${restaurant_id}/images`,
             providesTags: ["RestarauntImage"],
         }),
-        deleteRestaurantImage: builder.mutation<void, { restaurant_id: string, image_id: string }>({
+        deleteRestaurantImage: builder.mutation<
+            void,
+            { restaurant_id: string; image_id: string }
+        >({
             query: ({ restaurant_id, image_id }) => ({
                 url: `restaurants/${restaurant_id}/images/${image_id}`,
                 method: "DELETE",
@@ -84,6 +96,13 @@ const extendedApi = base.injectEndpoints({
         getRestaurant: builder.query<Restaurant, string>({
             query: (restaurant_id) => `restaurants/${restaurant_id}`,
             providesTags: ["Restaurant"],
+        }),
+        getOrderItemsByRestaurantId: builder.query<
+            OrderItem[],
+            { restaurant_id: string }
+        >({
+            query: (body) => `restaurants/${body.restaurant_id}/orders/items`,
+            providesTags: ["Customer"],
         }),
     }),
 });
@@ -98,8 +117,11 @@ export const {
     useUpdateTimingMutation,
     useGetTimingsQuery,
     useGetDishesQuery,
-    usePutDishMutation,
+    useGetDishQuery,
+    usePutDishesMutation,
     useGetRestaurantImagesQuery,
     useDeleteRestaurantImageMutation,
     useGetRestaurantQuery,
+    useGetOrderItemsByRestaurantIdQuery,
+    
 } = extendedApi;

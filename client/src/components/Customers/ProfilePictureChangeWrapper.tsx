@@ -90,7 +90,7 @@ function ProfilePictureChangeWrapper(
                 {(isLoading || isSuccess) && (
                     <LoadingSpinnerToCheck
                         isSuccess={isSuccess}
-                        onComplete={() => navigate("/explore")}
+                        onComplete={() => {}}
                     />
                 )}
             </DialogContent>

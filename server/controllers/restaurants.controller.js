@@ -1,5 +1,5 @@
 const session = require('express-session');
-const { Restaurant, RestaurantTiming, RestaurantImage, Dish, Order } = require('../models');
+const { Restaurant, RestaurantTiming, RestaurantImage, Dish, Order, OrderItem } = require('../models');
 const bcrypt = require('bcryptjs');
 
 // Signup (create restaurant)
@@ -19,6 +19,16 @@ exports.createRestaurant = async (req, res) => {
     restaurant.password = undefined;
     req.session.restaurantId = restaurant.id;
     res.status(201).json(restaurant);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.getOrderItemsByRestaurantId = async (req, res) => {
+  try {
+    const orderItems = await OrderItem.findAll({ where: { restaurant_id: req.params.restaurantId } });
+    res.status(200).json(orderItems);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
@@ -205,16 +215,28 @@ exports.deleteRestaurantImage = async (req, res) => {
   }
 };
 
-// Add a new dish
-exports.putDish = async (req, res) => {
+// Add new dishes
+exports.putDishes = async (req, res) => {
   try {
     if (!isAuthorized(req)) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-    const dish = await Dish.upsert({
-      ...req.body,
-    });
-    res.status(201).json(dish);
+    const { dishes } = req.body;
+    if (!Array.isArray(dishes) || dishes.length === 0) {
+      return res.status(400).json({ message: 'Dishes array is required' });
+    }
+
+    // Remove all current dishes under the restaurant
+    await Dish.destroy({ where: { restaurant_id: req.session.restaurantId } });
+
+    // Add new dishes
+    const newDishes = dishes.map(dish => ({
+      ...dish,
+      restaurant_id: req.session.restaurantId
+    }));
+    const createdDishes = await Dish.bulkCreate(newDishes);
+
+    res.status(201).json(createdDishes);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
@@ -236,7 +258,7 @@ exports.getDishes = async (req, res) => {
 exports.getDish = async (req, res) => {
   try {
     const dish = await Dish.findOne({
-      where: { id: req.params.dishId, restaurant_id: req.params.id }
+      where: { id: req.params.dishId }
     });
     if (!dish) {
       return res.status(404).json({ message: 'Dish not found' });

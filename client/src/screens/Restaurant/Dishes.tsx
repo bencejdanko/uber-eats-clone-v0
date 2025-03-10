@@ -1,49 +1,27 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { usePutDishMutation } from "@/services/api";
+import { usePutDishesMutation } from "@/services/api";
 import { DishesForm } from "@/components/Restaurants";
 import { LoadingSpinnerToCheck } from "@/components";
-import { Dish } from "@/types";
 
 function Dishes() {
     const dispatch = useAppDispatch();
     const restaurant = useAppSelector((state) => state.restaurant);
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
 
     const [
-        updateDish,
-        // {
-        //     isLoading: isTimingLoading,
-        //     isError: isTimingError,
-        //     isSuccess: isTimingSuccess,
-        //     error: timingError,
-        // },
-    ] = usePutDishMutation();
+        updateDishes,
+        {
+            isLoading,
+            isError,
+            isSuccess,
+            error,
+        },
+    ] = usePutDishesMutation();
 
     async function onSubmit(data: any) {
-        setIsSuccess(false);
-        setIsError(false);
-        setIsLoading(true);
-
         const dishes = data.dishes;
-
-        for (const dish of dishes) {
-            const { error } = await updateDish({
-                ...dish,
-                restaurant_id: restaurant.id,
-            });
-            if (error) {
-                setIsLoading(false);
-                setIsError(true);
-                console.error("Failed to update dish:", error);
-                return;
-            }
-        }
-        setIsLoading(false);
-        setIsSuccess(true);
+        updateDishes({ restaurant_id: restaurant.id, dishes });
     }
 
     return (

@@ -2,17 +2,17 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-    const Favorites = sequelize.define('OrderItems', {
+    const FavoriteDish = sequelize.define('FavoriteDish', {
         customer_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
         },
-        restaurant_id: {
+        dish_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
         },
     }, {});
-    return Favorites;
+    return FavoriteDish;
 };
