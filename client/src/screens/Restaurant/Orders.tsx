@@ -119,6 +119,8 @@ function Orders() {
         restaurant_id: restaurant.id,
     });
 
+    const [filter, setFilter] = useState("All");
+
     useEffect(() => {
         if (orders) {
             console.log("Orders active:", orders);
@@ -127,13 +129,38 @@ function Orders() {
         }
     }, [orders, error]);
 
+    const filteredOrders = orders?.filter((order: OrderItem) => {
+        if (filter === "All") return true;
+        return order.order_status === filter;
+    });
+
     return (
         <div>
             <div className="mt-4 max-w-md mx-auto flex flex-col gap-10 py-20">
                 <div className="text-4xl font-bold">Orders</div>
-                {orders
+                <Select
+                    value={filter}
+                    onValueChange={(value) => setFilter(value)}
+                >
+                    <SelectTrigger className="w-full">
+                        <div>
+                            <b>Filter Orders: {" "}</b>
+                            <SelectValue placeholder="Select a filter" />
+                        </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectLabel>Filter</SelectLabel>
+                            <SelectItem value="All">All</SelectItem>
+                            <SelectItem value="New">New</SelectItem>
+                            <SelectItem value="Delivered">Delivered</SelectItem>
+                            <SelectItem value="Cancelled">Cancelled</SelectItem>
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+                {filteredOrders
                     ? (
-                        orders.map((order: any) => (
+                        filteredOrders.map((order: any) => (
                             <Order key={order.id} orderItem={order} />
                         ))
                     )
