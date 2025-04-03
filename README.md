@@ -1,3 +1,18 @@
+# Uber Eats Clone
+A full-stack clone of a popular food delivery service.
+
+## Tech Stack
+
+- Frontend
+  - React & Redux: State management with Redux Toolkit and RTK Query for asynchronous data fetching.
+  - TypeScript: Provides type safety and improved developer productivity.
+  - shadcn & Custom Layout Architecture: Offers a tailored and modern UI/UX.
+
+- Backend
+  - Node.js & Express: A RESTful API built on Express for managing requests and authentication.
+  - MySQL & Sequelize: Relational database management with ORM support.
+  - AWS S3 Storage: For handling file uploads securely and efficiently.
+
 # Setup Instructions
 
 ## Create an .env file in /server
